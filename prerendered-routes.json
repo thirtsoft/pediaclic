@@ -1,0 +1,8 @@
+{
+  "routes": {
+    "/pediaclic": {},
+    "/pediaclic/cabinet-dashboard": {},
+    "/pediaclic/medecin": {},
+    "/pediaclic/medecin-dashboard": {}
+  }
+}
