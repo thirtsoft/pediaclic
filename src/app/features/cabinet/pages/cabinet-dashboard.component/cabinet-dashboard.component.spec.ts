@@ -1,0 +1,22 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { CabinetDashboardComponent } from './cabinet-dashboard.component';
+
+describe('CabinetDashboardComponent', () => {
+  let component: CabinetDashboardComponent;
+  let fixture: ComponentFixture<CabinetDashboardComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [CabinetDashboardComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(CabinetDashboardComponent);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

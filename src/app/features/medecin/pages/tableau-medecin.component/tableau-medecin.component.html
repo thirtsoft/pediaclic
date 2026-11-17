@@ -1,0 +1,235 @@
+<div class="app-layout">
+  
+  <!-- SIDEBAR GAUCHE -->
+  <aside class="sidebar">
+    <div class="logo-container">
+      <!-- Logo factice PediaSaaS -->
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#0D9488"/></svg>
+      </div>
+      <div class="logo-text">
+        <h2>PediaSaaS</h2>
+        <p>Grandir en bonne santé</p>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <a href="#" class="nav-item active">
+        <span class="icon">⊞</span> Tableau de bord
+      </a>
+      <a href="#" class="nav-item"><span class="icon">👥</span> Patients</a>
+      <a href="#" class="nav-item"><span class="icon">📅</span> Rendez-vous</a>
+      <a href="#" class="nav-item"><span class="icon">🩺</span> Consultations</a>
+      <a href="#" class="nav-item"><span class="icon">📝</span> Ordonnances</a>
+      <a href="#" class="nav-item"><span class="icon">💉</span> Vaccinations</a>
+      <a href="#" class="nav-item"><span class="icon">📈</span> Suivi croissance</a>
+      <a href="#" class="nav-item"><span class="icon">🧾</span> Facturation</a>
+      <a href="#" class="nav-item"><span class="icon">📊</span> Rapports</a>
+      <a href="#" class="nav-item"><span class="icon">⚙️</span> Paramètres</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="illustration-doctor">
+        <!-- Illustration remplacée par un emoji pour la simplicité sans assets externes -->
+        <div class="doc-emoji">👨‍⚕️</div>
+        <p class="quote">Ensemble pour<br>la santé de nos enfants</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="main-content">
+    
+    <!-- HEADER TOP -->
+    <header class="top-header">
+      <div class="greeting-area">
+        <div class="user-avatar-large">
+          <span class="emoji">👨‍⚕️</span>
+        </div>
+        <div class="greeting-text">
+          <h1>Bonjour Dr. Diallo 👋</h1>
+          <p>Voici un aperçu de votre activité aujourd'hui</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="date-picker">
+          <span class="icon">📅</span> {{ currentDate }}
+        </button>
+        <button class="icon-btn notification">
+          <span class="icon">🔔</span>
+          <span class="badge-red">3</span>
+        </button>
+        <div class="user-profile-small">
+          <span class="emoji">👨‍⚕️</span>
+          <span class="icon">⌄</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- CARTES STATISTIQUES -->
+    <div class="stats-grid">
+      <div class="stat-card patients">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info">
+          <h3>186</h3>
+          <p>Patients enregistrés</p>
+          <span class="trend positive">↑ +5%</span>
+        </div>
+      </div>
+      <div class="stat-card rdv">
+        <div class="stat-icon">📅</div>
+        <div class="stat-info">
+          <h3>8</h3>
+          <p>Rendez-vous aujourd'hui</p>
+          <span class="trend neutral">↑ +0%</span>
+        </div>
+      </div>
+      <div class="stat-card consultations">
+        <div class="stat-icon">🩺</div>
+        <div class="stat-info">
+          <h3>6</h3>
+          <p>Consultations aujourd'hui</p>
+          <span class="trend positive">↑ +20%</span>
+        </div>
+      </div>
+      <div class="stat-card suivis">
+        <div class="stat-icon">🔔</div>
+        <div class="stat-info">
+          <h3>12</h3>
+          <p>Suivis à effectuer</p>
+          <span class="trend positive">↑ +2%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRILLE PRINCIPALE (3 Colonnes) -->
+    <div class="dashboard-grid">
+      
+      <!-- COLONNE 1 : RDV & PATIENTS -->
+      <div class="col-left">
+        <!-- Mes rendez-vous -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2><span class="icon">📅</span> Mes rendez-vous aujourd'hui</h2>
+            <a href="#" class="link">Voir tous →</a>
+          </div>
+          <div class="appointment-list">
+            <div class="appointment-item" *ngFor="let rdv of appointments()">
+              <div class="time">{{ rdv.time }}</div>
+              <div class="avatar" [style.background-color]="rdv.avatarColor">👦</div>
+              <div class="details">
+                <h4>{{ rdv.name }} • {{ rdv.age }}</h4>
+                <p>{{ rdv.type }}</p>
+              </div>
+              <div class="status-badge" [ngClass]="rdv.status === 'Confirmé' ? 'confirmed' : 'waiting'">
+                {{ rdv.status === 'Confirmé' ? '✓ ' : '⏱ ' }}{{ rdv.status }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mes patients récents -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2><span class="icon">👥</span> Mes patients récents</h2>
+            <a href="#" class="link">Voir tous →</a>
+          </div>
+          <div class="patient-list">
+            <div class="patient-item" *ngFor="let patient of recentPatients()">
+              <div class="avatar" [style.background-color]="patient.avatarColor">👧</div>
+              <div class="details">
+                <h4>{{ patient.name }} • {{ patient.age }}</h4>
+                <p>Dernière visite : {{ patient.lastVisit }}</p>
+              </div>
+              <div class="status-badge" [ngClass]="patient.status === 'Suivi à jour' ? 'up-to-date' : 'to-follow'">
+                {{ patient.status }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLONNE 2 : ALERTES & GRAPHIQUE -->
+      <div class="col-middle">
+        <!-- À suivre en priorité -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2><span class="icon">🔔</span> À suivre en priorité</h2>
+            <span class="badge-red">3</span>
+          </div>
+          <div class="alert-list">
+            <div class="alert-item" *ngFor="let alert of priorityAlerts()" [ngClass]="alert.type">
+              <div class="alert-icon">
+                {{ alert.type === 'danger' ? '❗' : (alert.type === 'warning' ? '💉' : '📈') }}
+              </div>
+              <div class="alert-details">
+                <h4>{{ alert.title }}</h4>
+                <p>{{ alert.subtitle }}</p>
+              </div>
+              <button class="btn-small">Voir</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mon activité médicale -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2><span class="icon">📊</span> Mon activité médicale (7 derniers jours)</h2>
+            <a href="#" class="link">Voir détails</a>
+          </div>
+          <div class="chart-container">
+            <div class="chart-y-axis">
+              <!-- Axe Y simplifié -->
+              <span>8</span><span>6</span><span>4</span><span>2</span>
+            </div>
+            <div class="chart-bars">
+              <div class="bar-group" *ngFor="let bar of chartData()">
+                <div class="bar-value">{{ bar.value }}</div>
+                <div class="bar" [style.height]="bar.height"></div>
+                <div class="bar-label">{{ bar.day }}<br><small>{{ bar.date }}</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLONNE 3 : ACTIONS RAPIDES -->
+      <div class="col-right">
+        <div class="panel actions-panel">
+          <div class="panel-header">
+            <h2><span class="icon">⚡</span> Actions rapides</h2>
+          </div>
+          <div class="quick-actions">
+            <button class="action-btn green">
+              <span class="icon">📅</span> Prendre un RDV
+            </button>
+            <button class="action-btn blue">
+              <span class="icon">👤</span> Enregistrer un patient
+            </button>
+            <button class="action-btn purple">
+              <span class="icon">📝</span> Nouvelle consultation
+            </button>
+            <button class="action-btn orange">
+              <span class="icon">💉</span> Saisir une vaccination
+            </button>
+            <button class="action-btn teal">
+              <span class="icon">🧾</span> Éditer une ordonnance
+            </button>
+          </div>
+        </div>
+
+        <!-- Encart de motivation -->
+        <div class="motivation-card">
+          <p>Prendre soin<br>de nos enfants,<br>notre priorité !</p>
+          <div class="illustration-girl">
+            <!-- Emojis pour remplacer l'illustration -->
+            <span class="girl-emoji">👧🏽</span>
+            <span class="heart-emoji">💚</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>

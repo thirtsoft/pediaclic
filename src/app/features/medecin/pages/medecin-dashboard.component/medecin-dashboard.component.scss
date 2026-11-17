@@ -1,0 +1,804 @@
+// ==========================================================================
+// VARIABLES & DESIGN TOKENS (Conforme au modèle exact)
+// ==========================================================================
+$navy-dark: #0f2557;
+$slate-muted: #64748b;
+$teal-primary: #00b4b6;
+$orange-accent: #ff8a3d;
+$bg-page: #f3f8fc;
+$white: #ffffff;
+$border-soft: #e2edf7;
+
+$radius-lg: 18px;
+$radius-md: 12px;
+$radius-pill: 999px;
+$shadow-card: 0 4px 20px rgba(15, 37, 87, 0.04);
+$shadow-hover: 0 10px 28px rgba(0, 180, 182, 0.12);
+
+:host {
+  display: block;
+  font-family:
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  color: $navy-dark;
+  background-color: $bg-page;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+// ==========================================================================
+// LAYOUT & SUPPRESSION DU SCROLL SIDEBAR
+// ==========================================================================
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 37, 87, 0.45);
+  z-index: 90;
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+
+// SIDEBAR FIXE (Sans scroll interne, utilise le scroll principal de la page)
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 245px;
+  background: linear-gradient(180deg, $white 0%, #eef9fb 100%);
+  border-right: 1px solid $border-soft;
+  padding: 1.15rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  z-index: 100;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+
+  &.is-open {
+    transform: translateX(0);
+  }
+
+  @media (min-width: 1024px) {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    transform: translateX(0);
+    flex-shrink: 0;
+  }
+
+  &__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+
+    .brand-logo svg {
+      width: 44px;
+      height: 44px;
+      transition: transform 0.3s ease;
+      &:hover {
+        transform: scale(1.08);
+      }
+    }
+
+    .brand-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      display: block;
+      line-height: 1.1;
+
+      .teal {
+        color: $teal-primary;
+      }
+      .orange {
+        color: $orange-accent;
+      }
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: $slate-muted;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    border: none;
+    background: transparent;
+    border-radius: $radius-md;
+    color: $navy-dark;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      color: #0284c7;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    &:hover {
+      background: rgba(0, 180, 182, 0.08);
+      transform: translateX(4px);
+      .nav-icon {
+        transform: scale(1.15);
+      }
+    }
+
+    &.is-active {
+      background: linear-gradient(90deg, $teal-primary, #13c2c2);
+      color: $white;
+      box-shadow: 0 4px 12px rgba(0, 180, 182, 0.3);
+
+      .nav-icon {
+        color: $white;
+      }
+    }
+  }
+
+  &__promo {
+    margin-top: 1rem;
+    background: linear-gradient(180deg, #d8f3f6 0%, #99e2e8 100%);
+    border-radius: $radius-lg;
+    padding: 0.75rem;
+    text-align: center;
+    flex-shrink: 0;
+
+    .promo-photo-wrap {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 0.45rem;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid $white;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+
+      .promo-photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .promo-badge {
+      background: $white;
+      color: $navy-dark;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 0.45rem 0.5rem;
+      border-radius: $radius-md;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      line-height: 1.25;
+    }
+  }
+}
+
+// MAIN WRAPPER (Scroll principal droit)
+.main-wrapper {
+  flex: 1;
+  padding: 1rem;
+  min-width: 0;
+  overflow-x: hidden;
+
+  @media (min-width: 768px) {
+    padding: 1.5rem 1.75rem 2.5rem;
+  }
+}
+
+// ==========================================================================
+// TOPBAR / HEADER
+// ==========================================================================
+.topbar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .burger-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: $white;
+    border: 1px solid $border-soft;
+    padding: 0.55rem;
+    border-radius: 10px;
+    cursor: pointer;
+
+    span {
+      width: 20px;
+      height: 2px;
+      background: $navy-dark;
+    }
+
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
+  .doctor-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid $white;
+    box-shadow: $shadow-card;
+    flex-shrink: 0;
+
+    &.small {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  .greeting {
+    h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: $navy-dark;
+
+      @media (min-width: 768px) {
+        font-size: 1.55rem;
+      }
+    }
+
+    p {
+      margin: 0.15rem 0 0;
+      font-size: 0.85rem;
+      color: $slate-muted;
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .date-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: $white;
+    border: 1px solid $border-soft;
+    border-radius: $radius-pill;
+    padding: 0.5rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: $navy-dark;
+    cursor: pointer;
+  }
+
+  .notif-btn {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: $white;
+    border: 1px solid $border-soft;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+
+    .notif-badge {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      background: #ef4444;
+      color: $white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+    }
+  }
+
+  .profile-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+  }
+}
+
+// ==========================================================================
+// KPI CARDS INTERACTIVES
+// ==========================================================================
+.kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.15rem 1.25rem;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+
+  &:hover,
+  &.is-selected {
+    transform: translateY(-4px);
+    box-shadow: $shadow-hover;
+    border-color: $teal-primary;
+  }
+
+  &--mint {
+    background: linear-gradient(135deg, #d7f5f0 0%, #ebf9f6 100%);
+  }
+  &--blue {
+    background: linear-gradient(135deg, #dbeeff 0%, #eef6ff 100%);
+  }
+  &--green {
+    background: linear-gradient(135deg, #ddf6e4 0%, #effbf2 100%);
+  }
+  &--peach {
+    background: linear-gradient(135deg, #fde8d7 0%, #fef4ec 100%);
+  }
+
+  &__icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.75);
+    display: grid;
+    place-items: center;
+    font-size: 1.35rem;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .kpi-value {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: $navy-dark;
+    line-height: 1.1;
+  }
+
+  .kpi-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $slate-muted;
+    margin-top: 2px;
+  }
+
+  .kpi-trend {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #10b981;
+    margin-top: 4px;
+  }
+}
+
+// ==========================================================================
+// GRILLES CENTRALE & INFÉRIEURE (Structure identique à la maquette)
+// ==========================================================================
+.middle-grid,
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  background: $white;
+  border-radius: $radius-lg;
+  padding: 1.25rem;
+  box-shadow: $shadow-card;
+  border: 2px solid $border-soft;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+
+  &.interactive-card {
+    cursor: pointer;
+    &:hover,
+    &.is-selected {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(15, 37, 87, 0.08);
+      border-color: $teal-primary;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: $navy-dark;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      small {
+        font-weight: 400;
+        color: $slate-muted;
+        font-size: 0.75rem;
+      }
+    }
+
+    .link-all {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #0284c7;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      &:hover {
+        color: $teal-primary;
+      }
+    }
+  }
+}
+
+// RDV & Patients récents (Alignement précis)
+.rdv-list,
+.patients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rdv-item,
+.patient-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f5f9;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.rdv-time {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: $navy-dark;
+  background: #f1f5f9;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
+.rdv-details,
+.patient-info {
+  flex: 1;
+  margin-left: 0.75rem;
+
+  .rdv-name,
+  .patient-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: $navy-dark;
+    span {
+      color: $slate-muted;
+      font-weight: 500;
+      font-size: 0.8rem;
+    }
+  }
+
+  .rdv-reason,
+  .patient-visit {
+    font-size: 0.78rem;
+    color: $slate-muted;
+  }
+}
+
+.avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+// Status pills (Confirmé / À venir / Suivi)
+.status-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  white-space: nowrap;
+
+  &--confirmed {
+    background: #e6f6ec;
+    color: #166534;
+  }
+  &--upcoming {
+    background: #e0f2fe;
+    color: #0369a1;
+  }
+}
+
+// Alertes prioritaires
+.priority-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.priority-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: $radius-md;
+
+  &--danger {
+    background: #fef2f2;
+    border: 1px solid #fee2e2;
+  }
+  &--warning {
+    background: #fffbeb;
+    border: 1px solid #fef3c7;
+  }
+  &--info {
+    background: #f0fdf4;
+    border: 1px solid #dcfce7;
+  }
+
+  .priority-icon {
+    font-size: 1.1rem;
+  }
+
+  .priority-content {
+    flex: 1;
+    strong {
+      font-size: 0.82rem;
+      color: $navy-dark;
+      display: block;
+    }
+    p {
+      font-size: 0.75rem;
+      color: $slate-muted;
+      margin: 0;
+    }
+  }
+
+  .btn-voir {
+    background: $white;
+    border: 1px solid $border-soft;
+    padding: 0.3rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: $navy-dark;
+    transition: background 0.2s ease;
+    &:hover {
+      background: #f1f5f9;
+    }
+  }
+}
+
+// Actions rapides (Boutons horizontaux colorés exacts)
+.actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid transparent;
+  border-radius: $radius-md;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateX(4px);
+    filter: brightness(0.97);
+  }
+
+  &--green {
+    background: #e6f6ec;
+    color: #166534;
+  }
+  &--blue {
+    background: #e0f2fe;
+    color: #0369a1;
+  }
+  &--purple {
+    background: #f3e8ff;
+    color: #6b21a8;
+  }
+  &--orange {
+    background: #ffedd5;
+    color: #9a3412;
+  }
+  &--teal {
+    background: #ccfbf1;
+    color: #115e59;
+  }
+
+  .action-icon {
+    font-size: 1.1rem;
+  }
+}
+
+// Graphique d'activité médicale (Barres cyan verticales)
+.bar-chart {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 150px;
+  padding-top: 1rem;
+
+  .bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    gap: 0.35rem;
+    height: 100%;
+    justify-content: flex-end;
+  }
+
+  .bar-value {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: $navy-dark;
+  }
+
+  .bar-track {
+    width: 22px;
+    height: 100px;
+    background: transparent;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .bar-fill {
+    width: 100%;
+    background: $teal-primary;
+    border-radius: 12px;
+    transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .bar-day {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: $navy-dark;
+  }
+
+  .bar-date {
+    font-size: 0.65rem;
+    color: $slate-muted;
+  }
+}
+
+// Carte mascotte pédiatrique (Dégradé clair et chaleureux conforme)
+.mascot-card {
+  background: linear-gradient(135deg, #e0f7f6 0%, #b2ebf2 100%);
+  border-radius: $radius-lg;
+  padding: 1.25rem;
+  color: $navy-dark;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: $shadow-card;
+  position: relative;
+  overflow: hidden;
+
+  .mascot-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .mascot-quote {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 800;
+      line-height: 1.3;
+      color: $navy-dark;
+    }
+
+    .mascot-heart {
+      font-size: 1.5rem;
+      color: #e11d48;
+    }
+  }
+
+  .mascot-photo-wrap {
+    width: 120px;
+    height: 110px;
+    margin: 0.25rem auto 0;
+    border-radius: 16px;
+    overflow: hidden;
+
+    .mascot-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}
