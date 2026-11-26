@@ -1,0 +1,297 @@
+<div class="auth-page">
+  <!-- Vagues et accents décoratifs d'arrière-plan -->
+  <div class="auth-page__bg" aria-hidden="true">
+    <span class="orb orb--top-right"></span>
+    <span class="orb orb--accent-orange"></span>
+
+    <svg class="wave-bottom" viewBox="0 0 1440 240" preserveAspectRatio="none">
+      <path
+        fill="#00A8B5"
+        fill-opacity="0.22"
+        d="M0,130C240,210 480,60 760,120C1040,180 1240,90 1440,145L1440,240L0,240Z"
+      />
+      <path
+        fill="#00b894"
+        fill-opacity="0.18"
+        d="M0,165C320,90 620,220 960,150C1180,105 1320,160 1440,180L1440,240L0,240Z"
+      />
+    </svg>
+  </div>
+
+  <!-- HEADER SUPÉRIEUR : LOGO EN HAUT À GAUCHE + BOUTON RETOUR À DROITE -->
+  <header class="auth-header">
+    <a routerLink="/" (click)="onBackToHome()" class="brand-logo" aria-label="PediaSaaS Accueil">
+      <img [src]="logoImage" alt="PediaSaaS — Grandir en bonne santé" class="brand-logo__img" />
+    </a>
+
+    <a routerLink="/" (click)="onBackToHome()" class="btn-back-home">
+      <span class="btn-back-home__arrow" aria-hidden="true">←</span>
+      <span>Retour</span>
+    </a>
+  </header>
+
+  <!-- CONTENU PRINCIPAL : COLONNE GAUCHE (PHOTO + ACCROCHE) + COLONNE DROITE (CARTE CONNEXION) -->
+  <div class="auth-content">
+    <!-- COLONNE GAUCHE (MASQUÉE SUR MOBILE, VISIBLE DÈS DESKTOP 1080PX) -->
+    <section class="auth-brand-col">
+      <div class="auth-brand-col__inner">
+        <div class="auth-hero-row">
+          <div class="auth-photo-box">
+            <img
+              [src]="doctorChildImage"
+              alt="Professionnelle de santé souriante avec une enfant et son ours en peluche"
+              class="auth-photo"
+            />
+          </div>
+
+          <div class="auth-pitch">
+            <svg class="doodle-hearts" viewBox="0 0 130 95" fill="none" aria-hidden="true">
+              <path
+                d="M28 52C28 52 10 39 10 26.5C10 19.5 15.5 15.5 21 15.5C24.8 15.5 27.2 18 28.5 21.5C29.8 18 32.2 15.5 36 15.5C41.5 15.5 47 19.5 47 26.5C47 39 28 52 28 52Z"
+                stroke="#00A8B5"
+                stroke-width="2.2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M84 72C84 72 46 46 46 22C46 9.5 56 2 66.5 2C74 2 79.5 6.5 83.5 13C87.5 6.5 93 2 100.5 2C111 2 121 9.5 121 22C121 46 84 72 84 72Z"
+                stroke="#F39237"
+                stroke-width="2.4"
+                stroke-linecap="round"
+              />
+              <path
+                d="M28 52C38 64 56 68 72 64"
+                stroke="#00A8B5"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+
+            <h1 class="auth-pitch__title">
+              Votre partenaire<br />
+              pour une <span class="text-teal">santé</span><br />
+              <span class="text-teal">connectée</span>
+            </h1>
+
+            <p class="auth-pitch__desc">
+              Une plateforme intuitive et sécurisée pour gérer votre activité médicale en toute
+              sérénité.
+            </p>
+
+            <div class="mini-features">
+              <div class="mini-feature">
+                <div class="mini-feature__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="3" />
+                    <path d="M16 2v4M8 2v4M3 10h18M9 15l2 2 4-4" />
+                  </svg>
+                </div>
+                <span>Gestion<br />simplifiée</span>
+              </div>
+
+              <div class="mini-feature">
+                <div class="mini-feature__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <span>Données<br />sécurisées</span>
+              </div>
+
+              <div class="mini-feature">
+                <div class="mini-feature__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+                    <path
+                      d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"
+                    />
+                  </svg>
+                </div>
+                <span>Support<br />de proximité</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLONNE DROITE : CARTE DE CONNEXION + SÉCURITÉ -->
+    <section class="auth-form-col">
+      <div class="login-card">
+        <div class="login-card__accent-bar" aria-hidden="true"></div>
+        <h2 class="login-card__title">Connexion</h2>
+        <p class="login-card__subtitle">Accédez à votre espace PediaSaaS</p>
+
+        @if (errorMessage()) {
+          <div class="alert-error" role="alert">{{ errorMessage() }}</div>
+        }
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" novalidate>
+          <!-- Email professionnel -->
+          <div class="form-group">
+            <label for="email" class="form-label">
+              Email professionnel <span class="required-star">*</span>
+            </label>
+            <div class="input-box">
+              <svg
+                class="input-box__icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.9"
+              >
+                <rect x="3" y="5" width="18" height="14" rx="2.5" />
+                <path d="M3 7l9 6 9-6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="votre.email@exemple.fr"
+                class="form-control"
+                [class.is-invalid]="
+                  loginForm.controls.email.touched && loginForm.controls.email.invalid
+                "
+              />
+            </div>
+            @if (
+              loginForm.controls.email.touched && loginForm.controls.email.hasError('required')
+            ) {
+              <small class="error-text">L'email professionnel est requis.</small>
+            }
+            @if (loginForm.controls.email.touched && loginForm.controls.email.hasError('email')) {
+              <small class="error-text">Format d'adresse e-mail invalide.</small>
+            }
+          </div>
+
+          <!-- Mot de passe -->
+          <div class="form-group">
+            <label for="password" class="form-label">
+              Mot de passe <span class="required-star">*</span>
+            </label>
+            <div class="input-box">
+              <svg
+                class="input-box__icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.9"
+              >
+                <rect x="5" y="11" width="14" height="10" rx="2.5" />
+                <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke-linecap="round" />
+              </svg>
+              <input
+                id="password"
+                [type]="showPassword() ? 'text' : 'password'"
+                formControlName="password"
+                placeholder="Votre mot de passe"
+                class="form-control form-control--password"
+                [class.is-invalid]="
+                  loginForm.controls.password.touched && loginForm.controls.password.invalid
+                "
+              />
+              <button
+                type="button"
+                class="eye-btn"
+                (click)="togglePasswordVisibility()"
+                [attr.aria-label]="
+                  showPassword() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'
+                "
+              >
+                @if (showPassword()) {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
+                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                } @else {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
+                    <path
+                      d="M17.94 17.94A10.07 10.07 0 0 1 12 19c-7 0-11-7-11-7a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"
+                      stroke-linecap="round"
+                    />
+                    <path d="M1 1l22 22" stroke-linecap="round" />
+                  </svg>
+                }
+              </button>
+            </div>
+            @if (
+              loginForm.controls.password.touched &&
+              loginForm.controls.password.hasError('required')
+            ) {
+              <small class="error-text">Le mot de passe est requis.</small>
+            }
+            @if (
+              loginForm.controls.password.touched &&
+              loginForm.controls.password.hasError('minlength')
+            ) {
+              <small class="error-text">6 caractères minimum.</small>
+            }
+          </div>
+
+          <!-- Options : Se souvenir de moi / Mot de passe oublié ? -->
+          <div class="form-meta">
+            <label class="remember-check">
+              <input type="checkbox" formControlName="rememberMe" />
+              <span>Se souvenir de moi</span>
+            </label>
+            <a href="#forgot-password" class="forgot-link">Mot de passe oublié ?</a>
+          </div>
+
+          <!-- Bouton principal -->
+          <button type="submit" class="btn-submit" [disabled]="isSubmitting()">
+            <span>{{ isSubmitting() ? 'Connexion...' : 'Se connecter' }}</span>
+            <span class="arrow">→</span>
+          </button>
+
+          <!-- Séparateur "ou" -->
+          <div class="divider">
+            <span>ou</span>
+          </div>
+
+          <!-- Bouton Google -->
+          <button type="button" class="btn-google" (click)="onGoogleLogin()">
+            <svg class="google-g" viewBox="0 0 24 24">
+              <path
+                fill="#4285F4"
+                d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.27 14.29c-.24-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.98-3.09z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.98 3.09c.95-2.85 3.6-4.96 6.73-4.96z"
+              />
+            </svg>
+            <span>Se connecter avec Google</span>
+          </button>
+        </form>
+
+        <p class="signup-prompt">
+          Vous n'avez pas de compte ?
+          <a routerLink="/auth/register">Créer un compte</a>
+        </p>
+      </div>
+
+      <!-- Mention de sécurité sous la carte -->
+      <div class="rgpd-footer">
+        <svg
+          class="rgpd-shield"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>Connexion sécurisée • Données médicales protégées</span>
+      </div>
+    </section>
+  </div>
+</div>

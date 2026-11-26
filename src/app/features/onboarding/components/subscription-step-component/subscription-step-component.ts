@@ -1,0 +1,186 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-subscription-step-component',
+  standalone: true,
+  imports: [
+  ],
+  templateUrl: './subscription-step-component.html',
+  styleUrl: './subscription-step-component.css',
+})
+export class SubscriptionStepComponent {
+
+  /*
+  private readonly fb = inject(FormBuilder);
+  private readonly referential = inject(OnboardingReferentialService);
+  readonly catalog = signal<SubscriptionCatalogResponse | null>(null);
+  readonly loading = signal(true);
+  readonly error = signal<string | null>(null);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly state = inject(OnboardingStateService);
+
+  readonly form = this.fb.group({
+    planUuid: ['', Validators.required],
+    planTarifUuid: [''],
+    planTarifDetailUuid: [''],
+    renouvellementAutomatique: [true],
+    commentaire: ['']
+  });
+
+  constructor() {
+    this.restoreForm();
+    this.loadCatalog();
+  }
+
+  private restoreForm(): void {
+    const request =
+      this.state.request().onboardingSubscriptionRequest;
+    if (!request) {
+      return;
+    }
+    this.form.patchValue(request);
+  }
+
+  private loadCatalog() {
+    this.referential.getSubscriptionCatalog()
+      .pipe(
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: response => {
+          if (response.success) {
+            this.catalog.set(response.data);
+          }
+          this.loading.set(false);
+        },
+        error: () => {
+          this.error.set("Impossible de charger les offres d'abonnement.");
+          this.loading.set(false);
+        }
+      });
+  }
+
+  get value() {
+    return this.form.getRawValue() as OnboardingSubscriptionRequest;
+  }
+
+  isValid(): boolean {
+    const plan = this.getSelectedPlan();
+
+    if (!plan) {
+      return false;
+    }
+
+    if (plan.type === 'TRIAL') {
+      return this.form.get('planUuid')?.valid ?? false;
+    }
+
+    const planTarifUuid = this.form.value.planTarifUuid;
+    const planTarifDetailUuid = this.form.value.planTarifDetailUuid;
+
+    return (
+      this.form.get('planUuid')?.valid === true &&
+      !!planTarifUuid &&
+      !!planTarifDetailUuid
+    );
+  }
+
+  markTouched() {
+    this.form.markAllAsTouched();
+  }
+
+  selectPlan(plan: OnboardingPlanResponse): void {
+    let tarifUuid = '';
+    let detailUuid = '';
+
+    if (plan.tarifs?.length === 1) {
+      const tarif = plan.tarifs[0];
+
+      tarifUuid = tarif.uuid;
+
+      if (tarif.details?.length === 1) {
+        detailUuid = tarif.details[0].uuid;
+      }
+    }
+
+    this.form.patchValue({
+      planUuid: plan.uuid,
+      planTarifUuid: tarifUuid,
+      planTarifDetailUuid: detailUuid,
+      renouvellementAutomatique: plan.type === 'TRIAL' ? false : true
+    });
+
+    this.updateSubscriptionDisplay(plan);
+  }
+
+  selectTarif(tarif: OnboardingPlanTarifResponse): void {
+    this.form.patchValue({
+      planTarifUuid: tarif.uuid,
+      planTarifDetailUuid: ''
+    });
+
+    const plan = this.getSelectedPlan();
+
+    if (plan) {
+      this.updateSubscriptionDisplay(plan);
+    }
+  }
+
+  private getSelectedPlan(): OnboardingPlanResponse | undefined {
+    const planUuid = this.form.value.planUuid;
+
+    if (!planUuid) {
+      return undefined;
+    }
+
+    return this.catalog()
+      ?.applications
+      .flatMap(application => application.plans)
+      .find(plan => plan.uuid === planUuid);
+  }
+
+  selectDetail(detail: OnboardingPlanTarifDetailResponse): void {
+    this.form.patchValue({
+      planTarifDetailUuid: detail.uuid
+    });
+
+    const plan = this.getSelectedPlan();
+
+    if (plan) {
+      this.updateSubscriptionDisplay(plan);
+    }
+  }
+
+  private updateSubscriptionDisplay(plan: OnboardingPlanResponse): void {
+
+    const tarif = plan.tarifs.find(
+      item => item.uuid === this.form.value.planTarifUuid
+    );
+
+    const detail = tarif?.details.find(
+      item => item.uuid === this.form.value.planTarifDetailUuid
+    );
+
+    this.state.updateViewModel({
+      subscriptionDisplay: {
+        planName: plan.libelle,
+        currencyLabel: tarif?.currencyLibelle,
+        billingPeriodLabel: detail?.billingPeriod,
+        amount: detail?.montantTtc
+      }
+    });
+  }
+
+  isPlanSelected(uuid: string) {
+    return this.form.value.planUuid === uuid;
+  }
+
+  isTarifSelected(uuid: string) {
+    return this.form.value.planTarifUuid === uuid;
+  }
+
+  isDetailSelected(uuid: string) {
+    return this.form.value.planTarifDetailUuid === uuid;
+  }
+    */
+}

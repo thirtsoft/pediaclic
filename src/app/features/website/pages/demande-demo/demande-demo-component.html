@@ -1,0 +1,595 @@
+<!-- <div class="demande-page">
+  <header class="demande-header">
+    <div class="container header-inner">
+      <button type="button" class="brand" aria-label="Retour à l'accueil" (click)="goBackHome()">
+        <img src="scoolli-logo.png" alt="Scoolli" class="brand-logo" />
+      </button>
+
+      <div class="header-text">
+        <span>Vous êtes un établissement scolaire ?</span>
+        <strong>Parlons de votre projet.</strong>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="demande-intro">
+      <div class="container">
+        <div class="intro-content">
+          <h1>
+            Parlons de votre
+            <span>établissement</span>
+          </h1>
+
+          <p>
+            Vous souhaitez découvrir Scoolli ou équiper votre établissement d'une solution de
+            gestion scolaire ?
+          </p>
+
+          <div class="intro-points">
+            <div class="intro-point">
+              <i class="fas fa-check-circle"></i>
+              <span>Une présentation adaptée à votre établissement</span>
+            </div>
+
+            <div class="intro-point">
+              <i class="fas fa-check-circle"></i>
+              <span>Un accompagnement de mise en place</span>
+            </div>
+
+            <div class="intro-point">
+              <i class="fas fa-check-circle"></i>
+              <span>Un espace Scoolli créé après validation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="demande-section">
+      <div class="container">
+        <div class="form-layout">
+          <aside class="form-sidebar">
+            <div class="sidebar-card">
+              <div class="sidebar-icon">
+                <i class="fas fa-comments"></i>
+              </div>
+
+              <h2>Pourquoi nous contacter ?</h2>
+
+              <p>
+                Ces informations nous permettent de mieux comprendre votre établissement et de
+                préparer votre accompagnement.
+              </p>
+
+              <div class="sidebar-list">
+                <div class="sidebar-item">
+                  <div class="sidebar-item-icon">
+                    <i class="fas fa-school"></i>
+                  </div>
+
+                  <div>
+                    <strong>Votre établissement</strong>
+                    <span>Quelques informations générales.</span>
+                  </div>
+                </div>
+
+                <div class="sidebar-item">
+                  <div class="sidebar-item-icon">
+                    <i class="fas fa-user"></i>
+                  </div>
+
+                  <div>
+                    <strong>Votre contact</strong>
+                    <span> La personne à contacter au sein de l'établissement. </span>
+                  </div>
+                </div>
+
+                <div class="sidebar-item">
+                  <div class="sidebar-item-icon">
+                    <i class="fas fa-cogs"></i>
+                  </div>
+
+                  <div>
+                    <strong>Vos besoins</strong>
+                    <span>Les fonctionnalités qui vous intéressent.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-note">
+                <i class="fas fa-lock"></i>
+
+                <span>
+                  Vos informations sont utilisées uniquement dans le cadre du traitement de votre
+                  demande.
+                </span>
+              </div>
+            </div>
+          </aside>
+
+          <div class="form-card">
+            @if (submitted) {
+              <div class="success-state">
+                <div class="success-icon">
+                  <i class="fas fa-check"></i>
+                </div>
+
+                <h2>Votre demande a bien été envoyée</h2>
+
+                <p>
+                  Merci pour votre intérêt pour Scoolli. Notre équipe prendra contact avec vous
+                  prochainement afin d'échanger sur votre établissement et vos besoins.
+                </p>
+
+                <div class="success-info">
+                  <i class="fas fa-info-circle"></i>
+
+                  <span>
+                    Après validation de votre demande, votre espace Scoolli pourra être créé et les
+                    informations de connexion vous seront communiquées.
+                  </span>
+                </div>
+              </div>
+            }
+
+            @if (!submitted) {
+              <form [formGroup]="demandeForm" (ngSubmit)="submit()" novalidate>
+                <div class="form-section">
+                  <div class="form-section-header">
+                    <div class="section-number">01</div>
+
+                    <div>
+                      <h2>Votre établissement</h2>
+                      <p>Quelques informations pour mieux vous connaître.</p>
+                    </div>
+                  </div>
+
+                  <div class="form-grid" formGroupName="etablissement">
+                    <div class="form-field full">
+                      <label for="etablissement">
+                        Nom de l'établissement
+                        <span>*</span>
+                      </label>
+
+                      <div class="input-wrapper">
+                        <i class="fas fa-school"></i>
+
+                        <input
+                          id="etablissement"
+                          type="text"
+                          formControlName="nom"
+                          placeholder="Ex. École Les Hirondelles"
+                          autocomplete="organization"
+                        />
+                      </div>
+
+                      @if (
+                        demandeForm.controls.etablissement.controls.nom.touched &&
+                        demandeForm.controls.etablissement.controls.nom.invalid
+                      ) {
+                        <small class="error"> Le nom de l'établissement est obligatoire. </small>
+                      }
+                    </div>
+
+                    <div class="form-field">
+                      <label for="type">
+                        Cycle disponible
+                        <span>*</span>
+                      </label>
+
+                      <div class="input-wrapper">
+                        <i class="fas fa-building"></i>
+
+                        <select id="type" formControlName="cycle">
+                          <option value="">Sélectionner</option>
+                          <option value="MATERNELLE">Maternelle</option>
+                          <option value="PRIMAIRE">Primaire</option>
+                          <option value="COLLEGE">Collège</option>
+                          <option value="LYCEE">Lycée</option>
+                          <option value="MATERNELLE-PRIMAIRE">Maternelle et Primaire</option>
+                          <option value="MATERNELLE-PRIMAIRE-COLLEGE">
+                            Maternelle-Primaire-Collège
+                          </option>
+                          <option value="PRIMAIRE-COLLEGE-LYCEE">Primaire-Collège-Lycée</option>
+                          <option value="COLLEGE-LYCEE">Collège et Lycée</option>
+
+                          <option value="AUTRE">Autres</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-field">
+                      <label for="type">
+                        Type d'établissement
+                        <span>*</span>
+                      </label>
+
+                      <div class="input-wrapper">
+                        <i class="fas fa-building"></i>
+
+                        <select id="type" formControlName="type">
+                          <option value="">Sélectionner</option>
+                          <option value="PRIVE">Établissement privé</option>
+                          <option value="PUBLIC">Établissement public</option>
+                          <option value="AUTRE">Autre</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-field">
+                      <label for="ville">
+                        Ville
+                        <span>*</span>
+                      </label>
+
+                      <div class="input-wrapper">
+                        <i class="fas fa-map-marker-alt"></i>
+
+                        <input
+                          id="ville"
+                          type="text"
+                          formControlName="ville"
+                          placeholder="Ex. Dakar"
+                          autocomplete="address-level2"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="form-field">
+                      <label for="nombreEleves">
+                        Nombre approximatif d'élèves
+                        <span>*</span>
+                      </label>
+
+                      <div class="input-wrapper">
+                        <i class="fas fa-user-graduate"></i>
+
+                        <select id="nombreEleves" formControlName="nombreEleves">
+                          <option value="">Sélectionner</option>
+                          <option value="MOINS_100">Moins de 100</option>
+                          <option value="100_300">100 à 300</option>
+                          <option value="301_800">301 à 800</option>
+                          <option value="801_1500">801 à 1 500</option>
+                          <option value="PLUS_1500">Plus de 1 500</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-section">
+                  <div class="form-section-header">
+                    <div class="section-number">02</div>
+
+                    <div>
+                      <h2>Vos coordonnées</h2>
+
+                      <p>Indiquez la personne que notre équipe pourra contacter.</p>
+                    </div>
+                  </div>
+
+                  <div class="form-grid" formGroupName="responsable">
+                    <div class="form-field">
+                      <label for="prenom">
+                        Prénom
+                        <span>*</span>
+                      </label>
+
+                      <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+
+                        <input
+                          id="prenom"
+                          type="text"
+                          formControlName="prenom"
+                          placeholder="Votre prénom"
+                          autocomplete="given-name"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="form-field">
+                      <label for="nom">
+                        Nom
+                        <span>*</span>
+                      </label>
+
+                      <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+
+                        <input
+                          id="nom"
+                          type="text"
+                          formControlName="nom"
+                          placeholder="Votre nom"
+                          autocomplete="family-name"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="form-field">
+                      <label for="fonction">
+                        Fonction
+                        <span>*</span>
+                      </label>
+
+                      <div class="input-wrapper">
+                        <i class="fas fa-id-badge"></i>
+
+                        <select id="fonction" formControlName="fonction">
+                          <option value="">Sélectionner</option>
+                          <option value="DIRECTEUR">Directeur / Directrice</option>
+                          <option value="ADMINISTRATEUR">Administrateur / Administratrice</option>
+                          <option value="GESTIONNAIRE">Gestionnaire</option>
+                          <option value="FONDATEUR">Fondateur / Fondatrice</option>
+                          <option value="RESPONSABLE_PEDAGOGIQUE">Responsable pédagogique</option>
+                          <option value="AUTRE">Autre</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-field">
+                      <label for="telephone">
+                        Téléphone
+                        <span>*</span>
+                      </label>
+
+                      <div class="input-wrapper">
+                        <i class="fas fa-phone"></i>
+
+                        <input
+                          id="telephone"
+                          type="tel"
+                          formControlName="telephone"
+                          placeholder="Ex. 77 123 45 67"
+                          autocomplete="tel"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="form-field full">
+                      <label for="email"> Adresse email professionnelle </label>
+
+                      <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+
+                        <input
+                          id="email"
+                          type="email"
+                          formControlName="email"
+                          placeholder="exemple@etablissement.com"
+                          autocomplete="email"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-section">
+                  <div class="form-section-header">
+                    <div class="section-number">03</div>
+
+                    <div>
+                      <h2>Vos besoins</h2>
+
+                      <p>Sélectionnez les fonctionnalités qui vous intéressent.</p>
+                    </div>
+                  </div>
+
+                  <div class="modules-grid" formGroupName="besoins">
+                    <div class="module-options">
+                      <label class="module-option">
+                        <input type="checkbox" formControlName="gestionEleves" />
+
+                        <span class="module-check">
+                          <i class="fas fa-check"></i>
+                        </span>
+
+                        <span class="module-content">
+                          <strong>Gestion des élèves</strong>
+                          <small> Inscriptions, dossiers et classes </small>
+                        </span>
+                      </label>
+
+                      <label class="module-option">
+                        <input type="checkbox" formControlName="facturation" />
+
+                        <span class="module-check">
+                          <i class="fas fa-check"></i>
+                        </span>
+
+                        <span class="module-content">
+                          <strong>Facturation</strong>
+                          <small> Factures et suivi financier </small>
+                        </span>
+                      </label>
+
+                      <label class="module-option">
+                        <input type="checkbox" formControlName="paiements" />
+
+                        <span class="module-check">
+                          <i class="fas fa-check"></i>
+                        </span>
+
+                        <span class="module-content">
+                          <strong>Paiements</strong>
+                          <small> Encaissements et situations </small>
+                        </span>
+                      </label>
+
+                      <label class="module-option">
+                        <input type="checkbox" formControlName="notesBulletins" />
+
+                        <span class="module-check">
+                          <i class="fas fa-check"></i>
+                        </span>
+
+                        <span class="module-content">
+                          <strong>Notes & bulletins</strong>
+                          <small> Évaluation, notes et bulletins </small>
+                        </span>
+                      </label>
+
+                      <label class="module-option">
+                        <input type="checkbox" formControlName="absences" />
+
+                        <span class="module-check">
+                          <i class="fas fa-check"></i>
+                        </span>
+
+                        <span class="module-content">
+                          <strong>Absences & retards</strong>
+                          <small> Suivi de présence </small>
+                        </span>
+                      </label>
+
+                      <label class="module-option">
+                        <input type="checkbox" formControlName="enseignants" />
+
+                        <span class="module-check">
+                          <i class="fas fa-check"></i>
+                        </span>
+
+                        <span class="module-content">
+                          <strong>Gestion des enseignants</strong>
+                          <small> Enseignants et planification </small>
+                        </span>
+                      </label>
+
+                      <label class="module-option">
+                        <input type="checkbox" formControlName="emploiDuTemps" />
+
+                        <span class="module-check">
+                          <i class="fas fa-check"></i>
+                        </span>
+
+                        <span class="module-content">
+                          <strong>Emploi du temps</strong>
+                          <small> Cours, enseignements et salles </small>
+                        </span>
+                      </label>
+
+                      <label class="module-option">
+                        <input type="checkbox" formControlName="espaceParent" />
+
+                        <span class="module-check">
+                          <i class="fas fa-check"></i>
+                        </span>
+
+                        <span class="module-content">
+                          <strong>Espace Parent</strong>
+                          <small> Accès aux informations des enfants </small>
+                        </span>
+                      </label>
+                    </div>
+
+                    <div class="form-field message-field">
+                      <label for="message"> Parlez-nous de votre besoin </label>
+
+                      <textarea
+                        id="message"
+                        formControlName="message"
+                        rows="5"
+                        placeholder="Ex. Nous souhaitons principalement digitaliser les inscriptions et le suivi des paiements..."
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-section consent-section">
+                  <label class="consent-option">
+                    <input type="checkbox" formControlName="consentement" />
+
+                    <span class="consent-check">
+                      <i class="fas fa-check"></i>
+                    </span>
+
+                    <span>
+                      J'accepte que Wokite utilise les informations renseignées dans ce formulaire
+                      afin de traiter ma demande et de me contacter au sujet de Scoolli.
+                    </span>
+                  </label>
+
+                  @if (
+                    demandeForm.controls.consentement.touched &&
+                    demandeForm.controls.consentement.invalid
+                  ) {
+                    <small class="error">
+                      Votre consentement est nécessaire pour envoyer la demande.
+                    </small>
+                  }
+                </div>
+
+                @if (errorMessage) {
+                  <div class="form-error">
+                    <i class="fas fa-exclamation-circle"></i>
+
+                    <span>
+                      {{ errorMessage }}
+                    </span>
+                  </div>
+                }
+
+                <div class="form-actions">
+                  <div class="form-security">
+                    <i class="fas fa-lock"></i>
+
+                    <span> Vos informations sont sécurisées. </span>
+                  </div>
+
+                  <button type="submit" class="btn-submit">
+                    @if (isSubmitting) {
+                      <i class="fas fa-spinner fa-spin"></i>
+                      Envoi en cours...
+                    } @else {
+                      Envoyer ma demande
+                      <i class="fas fa-arrow-right"></i>
+                    }
+                  </button>
+                </div>
+              </form>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bottom-info">
+      <div class="container">
+        <div class="bottom-info-card">
+          <div class="bottom-info-icon">
+            <i class="fas fa-rocket"></i>
+          </div>
+
+          <div>
+            <h2>Et après votre demande ?</h2>
+
+            <p>
+              Notre équipe étudie votre demande et vous accompagne dans la mise en place de votre
+              établissement sur Scoolli. Une fois votre demande validée, votre espace peut être créé
+              et vous recevez vos informations de connexion.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="demande-footer">
+    <div class="container">
+      <div class="footer-content" (click)="goBackHome()" style="cursor: pointer">
+        <img src="scoolli-logo.png" alt="Scoolli" class="footer-logo" />
+
+        <p>La plateforme simple pour gérer votre établissement scolaire.</p>
+      </div>
+
+      <div class="footer-bottom">
+        <span> © 2026 Wokite. Tous droits réservés. </span>
+
+        <span> Gestion scolaire simplifiée. </span>
+      </div>
+    </div>
+  </footer>
+</div>
+ -->

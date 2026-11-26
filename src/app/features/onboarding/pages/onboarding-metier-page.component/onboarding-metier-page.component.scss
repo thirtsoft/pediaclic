@@ -1,0 +1,923 @@
+// ==========================================================================
+// TOKENS PEDIASAAAS (CHARTE TURQUOISE & ORANGE)
+// ==========================================================================
+$navy-900: #162642;
+$navy-700: #334666;
+$slate-600: #5c6f8c;
+$slate-400: #99a7bd;
+$teal-500: #00a8b5;
+$teal-600: #008e99;
+$teal-light: #e0f7f9;
+$orange-500: #f39237;
+$bg-page: #f2f9fb;
+$border-light: #dce6f0;
+$white: #ffffff;
+$danger: #d63061;
+
+$radius-sm: 12px;
+$radius-md: 16px;
+$radius-lg: 22px;
+$radius-pill: 9999px;
+
+$shadow-card: 0 16px 40px -12px rgba(22, 38, 66, 0.1);
+
+// ==========================================================================
+// BASE & LAYOUT MOBILE-FIRST
+// ==========================================================================
+:host {
+  display: block;
+  font-family:
+    'Plus Jakarta Sans',
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  color: $navy-900;
+  min-height: 100dvh;
+  background: linear-gradient(135deg, #eef9fb 0%, #f6fbfd 55%, #e6f6f9 100%);
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.onboarding-page {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 1120px) {
+    grid-template-columns: 340px 1fr;
+  }
+
+  &__bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+
+    .circle {
+      position: fixed;
+      border-radius: 50%;
+
+      &--top-left {
+        width: 190px;
+        height: 190px;
+        background: rgba($teal-500, 0.11);
+        top: 100px;
+        left: -40px;
+      }
+
+      &--top-right {
+        width: 160px;
+        height: 160px;
+        background: rgba($teal-500, 0.13);
+        top: 120px;
+        right: -65px;
+      }
+
+      &--bottom-right {
+        width: 130px;
+        height: 130px;
+        background: $orange-500;
+        bottom: 14%;
+        right: -70px;
+      }
+    }
+  }
+}
+
+// ==========================================================================
+// COLONNE GAUCHE : PHOTO DESCENDUE & ALIGNÉE AU NIVEAU DES FORMULAIRES SUR PC
+// ==========================================================================
+.onboarding-aside {
+  display: none;
+  position: relative;
+  z-index: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  @media (min-width: 1120px) {
+    display: flex;
+  }
+
+  // Décale la photo vers le bas pour l'aligner au niveau / centre des cartes d'étapes
+  &__top-spacer {
+    height: 148px;
+    flex-shrink: 0;
+  }
+
+  &__visual {
+    position: relative;
+    padding-left: 0.75rem;
+    flex-shrink: 0;
+
+    .orange-heart {
+      position: absolute;
+      top: 10px;
+      right: 46px;
+      font-size: 1.4rem;
+      z-index: 2;
+    }
+
+    .photo-frame {
+      width: 300px;
+      height: 295px;
+      border-radius: 34px 125px 34px 0;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 108%;
+        margin-top: -7%;
+        object-fit: cover;
+        object-position: center 20%;
+        display: block;
+      }
+    }
+  }
+
+  &__wave {
+    position: relative;
+    height: 170px;
+    margin-top: -32px;
+    flex-shrink: 0;
+
+    svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .wave-caption {
+      position: relative;
+      z-index: 2;
+      padding: 4rem 1.65rem 1rem;
+      color: $white;
+
+      .wave-icons {
+        display: flex;
+        gap: 0.7rem;
+        font-size: 1.15rem;
+        margin-bottom: 0.25rem;
+        opacity: 0.8;
+      }
+
+      strong {
+        display: block;
+        font-size: 1rem;
+        font-weight: 800;
+      }
+
+      p {
+        margin: 0.1rem 0 0;
+        font-size: 0.76rem;
+        opacity: 0.95;
+      }
+    }
+  }
+}
+
+// ==========================================================================
+// COLONNE PRINCIPALE : HAUTEUR COMPACTE POUR LIMITER LE SCROLL
+// ==========================================================================
+.onboarding-main {
+  position: relative;
+  z-index: 1;
+  padding: 0.85rem 1rem 1.75rem;
+
+  @media (min-width: 768px) {
+    padding: 1rem 2rem 2rem;
+  }
+}
+
+.onboarding-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 54px;
+  margin-bottom: 0.4rem;
+
+  .brand-logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    margin-left: -340px;
+    padding-left: 1.5rem;
+
+    @media (max-width: 1119px) {
+      margin-left: 0;
+      padding-left: 0;
+    }
+
+    &__img {
+      height: 48px;
+      width: auto;
+      max-width: 220px;
+      object-fit: contain;
+      display: block;
+
+      @media (max-width: 639px) {
+        height: 40px;
+        max-width: 180px;
+      }
+    }
+  }
+
+  .handwritten-motto {
+    display: none;
+
+    @media (min-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      color: $navy-900;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-left: auto;
+
+      svg {
+        width: 130px;
+        height: 12px;
+        margin-top: 2px;
+      }
+    }
+  }
+}
+
+.onboarding-container {
+  max-width: 820px;
+  margin-inline: auto;
+}
+
+.onboarding-subtitle-block {
+  text-align: center;
+  margin-bottom: 0.95rem;
+
+  h1 {
+    margin: 0;
+    color: $navy-700;
+    font-size: 1.05rem;
+    font-weight: 600;
+
+    @media (min-width: 768px) {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+// ==========================================================================
+// STEPPER 4 ÉTAPES (COMPACT)
+// ==========================================================================
+.stepper {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.35rem;
+  max-width: 660px;
+  margin: 0 auto 1.15rem;
+
+  &__track {
+    position: absolute;
+    top: 15px;
+    left: 12.5%;
+    right: 12.5%;
+    height: 3px;
+    background: #d5e0ec;
+    border-radius: 99px;
+    z-index: 0;
+  }
+
+  &__progress {
+    height: 100%;
+    background: $teal-500;
+    border-radius: 99px;
+    transition: width 0.35s ease;
+  }
+
+  &__item {
+    position: relative;
+    z-index: 1;
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    font-family: inherit;
+
+    &:disabled {
+      cursor: default;
+    }
+
+    &.is-active {
+      .stepper__circle {
+        background: $teal-500;
+        color: $white;
+        box-shadow: 0 6px 14px -4px rgba($teal-500, 0.55);
+      }
+
+      .stepper__label {
+        color: $navy-900;
+        font-weight: 700;
+      }
+    }
+
+    &.is-completed {
+      .stepper__circle {
+        background: $teal-500;
+        color: $white;
+      }
+
+      .stepper__label {
+        color: $teal-600;
+        font-weight: 600;
+      }
+    }
+  }
+
+  &__circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #d5e0ec;
+    color: $navy-700;
+    font-size: 0.84rem;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    transition: all 0.25s ease;
+  }
+
+  &__label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: $slate-600;
+    text-align: center;
+    line-height: 1.15;
+
+    @media (min-width: 640px) {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+// ==========================================================================
+// CARTE DU WIZARD (HAUTEUR ADAPTÉE AU CONTENU)
+// ==========================================================================
+.wizard-card {
+  background: $white;
+  border-radius: $radius-lg;
+  padding: 1.25rem 1.15rem;
+  box-shadow: $shadow-card;
+  border: 1px solid rgba($navy-900, 0.04);
+
+  @media (min-width: 768px) {
+    padding: 1.65rem 2.1rem;
+  }
+}
+
+.step-accent-bar {
+  width: 44px;
+  height: 3.5px;
+  border-radius: 99px;
+  background: $teal-500;
+  margin-bottom: 0.6rem;
+}
+
+.step-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: $navy-900;
+
+  @media (min-width: 768px) {
+    font-size: 1.5rem;
+  }
+}
+
+.step-subtitle {
+  margin: 0 0 1.1rem;
+  font-size: 0.86rem;
+  color: $slate-600;
+}
+
+// ==========================================================================
+// ÉTAPE 1 : PROFILS (COMPACT POUR VISIBILITÉ COMPLÈTE DU BOUTON CONTINUER)
+// ==========================================================================
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.1rem;
+  }
+}
+
+.profile-card {
+  position: relative;
+  background: $white;
+  border: 2px solid $border-light;
+  border-radius: $radius-md;
+  padding: 1.05rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.22s ease;
+
+  &:hover {
+    border-color: rgba($teal-500, 0.5);
+    transform: translateY(-2px);
+  }
+
+  &.is-selected {
+    border-color: $teal-500;
+    background: linear-gradient(180deg, rgba($teal-light, 0.35) 0%, $white 100%);
+    box-shadow: 0 10px 24px -10px rgba($teal-500, 0.28);
+  }
+
+  &__check {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: $teal-500;
+    color: $white;
+    font-size: 0.78rem;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+  }
+
+  &__illustration {
+    width: 96px;
+    height: 82px;
+    margin: 0 auto 0.5rem;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__title {
+    margin: 0 0 0.2rem;
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: $navy-900;
+  }
+
+  &__desc {
+    margin: 0;
+    font-size: 0.8rem;
+    color: $slate-600;
+    max-width: 190px;
+    margin-inline: auto;
+  }
+}
+
+// ==========================================================================
+// ÉTAPE 2 : FORMULAIRE ENTREPRISE
+// ==========================================================================
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  &--full {
+    @media (min-width: 640px) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: $navy-900;
+
+    span {
+      color: $danger;
+    }
+  }
+}
+
+.form-control {
+  width: 100%;
+  height: 40px;
+  padding: 0.45rem 0.85rem;
+  border-radius: $radius-sm;
+  border: 1.5px solid $border-light;
+  background: #f8fbfd;
+  color: $navy-900;
+  font-family: inherit;
+  font-size: 0.86rem;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    background: $white;
+    border-color: $teal-500;
+    box-shadow: 0 0 0 3px rgba($teal-500, 0.14);
+  }
+
+  &.is-invalid {
+    border-color: $danger;
+    background: #fff8fa;
+  }
+}
+
+.error-msg {
+  color: $danger;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+// ==========================================================================
+// ÉTAPE 3 : 4 CARTES D'ABONNEMENT
+// ==========================================================================
+.plans-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.plan-card {
+  position: relative;
+  border: 2px solid $border-light;
+  border-radius: $radius-md;
+  padding: 1rem 1.1rem;
+  background: $white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.22s ease;
+
+  &:hover {
+    border-color: rgba($teal-500, 0.55);
+    transform: translateY(-2px);
+  }
+
+  &.is-selected {
+    border-color: $teal-500;
+    background: linear-gradient(180deg, rgba($teal-light, 0.32) 0%, $white 100%);
+    box-shadow: 0 10px 24px -10px rgba($teal-500, 0.28);
+  }
+
+  &__badge {
+    position: absolute;
+    top: -10px;
+    right: 12px;
+    background: $orange-500;
+    color: $white;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 0.18rem 0.6rem;
+    border-radius: $radius-pill;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.2rem;
+
+    h3 {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 800;
+    }
+  }
+
+  &__radio {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid $border-light;
+    display: grid;
+    place-items: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: $white;
+
+    .is-selected & {
+      background: $teal-500;
+      border-color: $teal-500;
+    }
+  }
+
+  &__tagline {
+    margin: 0 0 0.55rem;
+    font-size: 0.76rem;
+    color: $slate-600;
+  }
+
+  &__price {
+    margin-bottom: 0.65rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid #edf2f7;
+
+    strong {
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: $navy-900;
+    }
+
+    span {
+      font-size: 0.75rem;
+      color: $slate-600;
+      margin-left: 0.2rem;
+    }
+  }
+
+  &__features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    color: $navy-700;
+    flex: 1;
+
+    .tick {
+      color: $teal-500;
+      font-weight: 800;
+      margin-right: 0.25rem;
+    }
+  }
+
+  &__select-btn {
+    width: 100%;
+    padding: 0.48rem 0.8rem;
+    border-radius: $radius-pill;
+    border: 1.5px solid $border-light;
+    background: #f8fbfd;
+    color: $navy-900;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+
+    &.active {
+      background: $teal-500;
+      border-color: $teal-500;
+      color: $white;
+    }
+  }
+}
+
+// ==========================================================================
+// ÉTAPE 4 : VALIDATION & RÉCAPITULATIF
+// ==========================================================================
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.summary-box {
+  background: #f8fbfd;
+  border: 1.5px solid $border-light;
+  border-radius: $radius-md;
+  padding: 0.9rem 1.05rem;
+
+  &--accent {
+    background: rgba($teal-light, 0.45);
+    border-color: rgba($teal-500, 0.35);
+  }
+
+  &--full {
+    @media (min-width: 640px) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+  }
+
+  .summary-step-tag {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: $teal-600;
+  }
+
+  .edit-link {
+    background: none;
+    border: none;
+    color: $orange-500;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  &__body {
+    strong {
+      display: block;
+      font-size: 0.94rem;
+      color: $navy-900;
+    }
+
+    span {
+      font-size: 0.8rem;
+      color: $slate-600;
+    }
+  }
+}
+
+.summary-details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+  margin: 0.35rem 0 0;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  dt {
+    font-size: 0.72rem;
+    color: $slate-600;
+  }
+
+  dd {
+    margin: 0.05rem 0 0;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: $navy-900;
+  }
+}
+
+.terms-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: 0.8rem;
+  color: $navy-700;
+  cursor: pointer;
+
+  input {
+    margin-top: 0.15rem;
+    width: 15px;
+    height: 15px;
+    accent-color: $teal-500;
+    flex-shrink: 0;
+  }
+
+  a {
+    color: $teal-600;
+    font-weight: 600;
+  }
+}
+
+// ==========================================================================
+// ACTIONS DU WIZARD & ÉTAT DE SUCCÈS
+// ==========================================================================
+.wizard-actions {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.65rem;
+
+  @media (min-width: 540px) {
+    flex-direction: row;
+    justify-content: flex-end;
+
+    &.has-prev {
+      justify-content: space-between;
+    }
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.55rem;
+  border-radius: $radius-pill;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  text-decoration: none;
+  transition: all 0.22s ease;
+
+  &--primary {
+    background: $teal-500;
+    color: $white;
+    box-shadow: 0 8px 20px -6px rgba($teal-500, 0.5);
+
+    &:hover:not(:disabled) {
+      background: $teal-600;
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+  }
+
+  &--outline {
+    background: $white;
+    border-color: $border-light;
+    color: $navy-700;
+
+    &:hover {
+      background: $bg-page;
+      border-color: $slate-400;
+    }
+  }
+}
+
+.success-state {
+  text-align: center;
+  padding-block: 1.25rem;
+
+  &__icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 0.85rem;
+    border-radius: 50%;
+    background: $teal-light;
+    color: $teal-500;
+    font-size: 1.5rem;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+  }
+
+  h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.35rem;
+    font-weight: 800;
+  }
+
+  p {
+    max-width: 480px;
+    margin: 0 auto 1.25rem;
+    color: $slate-600;
+    font-size: 0.88rem;
+  }
+}
+
+.bottom-dots {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  margin-top: 0.9rem;
+
+  span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #cfe0ea;
+
+    &.active {
+      background: $teal-500;
+    }
+  }
+}

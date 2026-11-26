@@ -1,0 +1,362 @@
+<div class="auth-page">
+  <!-- Vagues et accents décoratifs d'arrière-plan -->
+  <div class="auth-page__bg" aria-hidden="true">
+    <span class="orb orb--top-right"></span>
+    <span class="orb orb--accent-orange"></span>
+
+    <svg class="wave-bottom" viewBox="0 0 1440 240" preserveAspectRatio="none">
+      <path
+        fill="#00A8B5"
+        fill-opacity="0.22"
+        d="M0,130C240,210 480,60 760,120C1040,180 1240,90 1440,145L1440,240L0,240Z"
+      />
+      <path
+        fill="#00b894"
+        fill-opacity="0.18"
+        d="M0,165C320,90 620,220 960,150C1180,105 1320,160 1440,180L1440,240L0,240Z"
+      />
+    </svg>
+  </div>
+
+  <header class="auth-header">
+    <a routerLink="/" (click)="onBackToHome()" class="brand-logo" aria-label="PediaSaaS Accueil">
+      <img [src]="logoImage" alt="PediaSaaS — Grandir en bonne santé" class="brand-logo__img" />
+    </a>
+
+    <a routerLink="/" (click)="onBackToHome()" class="btn-back-home">
+      <span class="btn-back-home__arrow" aria-hidden="true">←</span>
+      <span>Retour</span>
+    </a>
+  </header>
+
+  <!-- CONTENU PRINCIPAL : COLONNE GAUCHE (PHOTO + ACCROCHE) + COLONNE DROITE (FORMULAIRE) -->
+  <div class="auth-content">
+    <!-- COLONNE GAUCHE (MASQUÉE SUR MOBILE, VISIBLE DÈS DESKTOP 1080PX) -->
+    <section class="auth-brand-col">
+      <div class="auth-brand-col__inner">
+        <div class="auth-hero-row">
+          <div class="auth-photo-box">
+            <img
+              [src]="doctorChildImage"
+              alt="Professionnelle de santé souriante avec une enfant et son ours en peluche"
+              class="auth-photo"
+            />
+          </div>
+
+          <div class="auth-pitch">
+            <svg class="doodle-hearts" viewBox="0 0 130 95" fill="none" aria-hidden="true">
+              <path
+                d="M28 52C28 52 10 39 10 26.5C10 19.5 15.5 15.5 21 15.5C24.8 15.5 27.2 18 28.5 21.5C29.8 18 32.2 15.5 36 15.5C41.5 15.5 47 19.5 47 26.5C47 39 28 52 28 52Z"
+                stroke="#00A8B5"
+                stroke-width="2.2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M84 72C84 72 46 46 46 22C46 9.5 56 2 66.5 2C74 2 79.5 6.5 83.5 13C87.5 6.5 93 2 100.5 2C111 2 121 9.5 121 22C121 46 84 72 84 72Z"
+                stroke="#F39237"
+                stroke-width="2.4"
+                stroke-linecap="round"
+              />
+              <path
+                d="M28 52C38 64 56 68 72 64"
+                stroke="#00A8B5"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+
+            <h1 class="auth-pitch__title">
+              Votre partenaire<br />
+              pour une <span class="text-teal">santé</span><br />
+              <span class="text-teal">connectée</span>
+            </h1>
+
+            <p class="auth-pitch__desc">
+              Créez votre compte et accédez à une plateforme intuitive et sécurisée pour votre
+              activité pédiatrique.
+            </p>
+
+            <div class="mini-features">
+              <div class="mini-feature">
+                <div class="mini-feature__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="3" />
+                    <path d="M16 2v4M8 2v4M3 10h18M9 15l2 2 4-4" />
+                  </svg>
+                </div>
+                <span>Gestion<br />simplifiée</span>
+              </div>
+
+              <div class="mini-feature">
+                <div class="mini-feature__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <span>Données<br />sécurisées</span>
+              </div>
+
+              <div class="mini-feature">
+                <div class="mini-feature__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+                    <path
+                      d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"
+                    />
+                  </svg>
+                </div>
+                <span>Support<br />de proximité</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLONNE DROITE : CARTE D'INSCRIPTION + SÉCURITÉ -->
+    <section class="auth-form-col">
+      <div class="register-card">
+        <div class="register-card__accent-bar" aria-hidden="true"></div>
+        <h2 class="register-card__title">Créer un compte</h2>
+        <p class="register-card__subtitle">Rejoignez l'espace PediaSaaS en quelques secondes</p>
+
+        @if (errorMessage()) {
+          <div class="alert-error" role="alert">{{ errorMessage() }}</div>
+        }
+
+        @if (successMessage()) {
+          <div class="alert-success" role="status">{{ successMessage() }}</div>
+        }
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form" novalidate>
+          <!-- Nom & Prénom côte à côte -->
+          <div class="form-row-2">
+            <!-- Nom -->
+            <div class="form-group">
+              <label for="nom" class="form-label"> Nom <span class="required-star">*</span> </label>
+              <div class="input-box">
+                <svg
+                  class="input-box__icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                >
+                  <circle cx="12" cy="7" r="4" />
+                  <path d="M5.5 21a6.5 6.5 0 0 1 13 0" />
+                </svg>
+                <input
+                  id="nom"
+                  type="text"
+                  formControlName="nom"
+                  maxlength="100"
+                  placeholder="Votre nom"
+                  class="form-control"
+                  [class.is-invalid]="
+                    registerForm.controls.nom.touched && registerForm.controls.nom.invalid
+                  "
+                />
+              </div>
+              @if (
+                registerForm.controls.nom.touched && registerForm.controls.nom.hasError('required')
+              ) {
+                <small class="error-text">Le nom est obligatoire.</small>
+              }
+              @if (
+                registerForm.controls.nom.touched && registerForm.controls.nom.hasError('maxlength')
+              ) {
+                <small class="error-text">100 caractères maximum.</small>
+              }
+            </div>
+
+            <!-- Prénom -->
+            <div class="form-group">
+              <label for="prenom" class="form-label">
+                Prénom <span class="required-star">*</span>
+              </label>
+              <div class="input-box">
+                <svg
+                  class="input-box__icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                >
+                  <circle cx="12" cy="7" r="4" />
+                  <path d="M5.5 21a6.5 6.5 0 0 1 13 0" />
+                </svg>
+                <input
+                  id="prenom"
+                  type="text"
+                  formControlName="prenom"
+                  maxlength="100"
+                  placeholder="Votre prénom"
+                  class="form-control"
+                  [class.is-invalid]="
+                    registerForm.controls.prenom.touched && registerForm.controls.prenom.invalid
+                  "
+                />
+              </div>
+              @if (
+                registerForm.controls.prenom.touched &&
+                registerForm.controls.prenom.hasError('required')
+              ) {
+                <small class="error-text">Le prénom est obligatoire.</small>
+              }
+              @if (
+                registerForm.controls.prenom.touched &&
+                registerForm.controls.prenom.hasError('maxlength')
+              ) {
+                <small class="error-text">100 caractères maximum.</small>
+              }
+            </div>
+          </div>
+
+          <!-- Adresse email -->
+          <div class="form-group">
+            <label for="email" class="form-label">
+              Adresse email <span class="required-star">*</span>
+            </label>
+            <div class="input-box">
+              <svg
+                class="input-box__icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.9"
+              >
+                <rect x="3" y="5" width="18" height="14" rx="2.5" />
+                <path d="M3 7l9 6 9-6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                maxlength="180"
+                placeholder="votre.email@exemple.fr"
+                class="form-control"
+                [class.is-invalid]="
+                  registerForm.controls.email.touched && registerForm.controls.email.invalid
+                "
+              />
+            </div>
+            @if (
+              registerForm.controls.email.touched &&
+              registerForm.controls.email.hasError('required')
+            ) {
+              <small class="error-text">L'adresse email est obligatoire.</small>
+            }
+            @if (
+              registerForm.controls.email.touched && registerForm.controls.email.hasError('email')
+            ) {
+              <small class="error-text">L'adresse email est invalide.</small>
+            }
+            @if (
+              registerForm.controls.email.touched &&
+              registerForm.controls.email.hasError('maxlength')
+            ) {
+              <small class="error-text">180 caractères maximum.</small>
+            }
+          </div>
+
+          <!-- Mot de passe -->
+          <div class="form-group">
+            <label for="motDePasse" class="form-label">
+              Mot de passe <span class="required-star">*</span>
+            </label>
+            <div class="input-box">
+              <svg
+                class="input-box__icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.9"
+              >
+                <rect x="5" y="11" width="14" height="10" rx="2.5" />
+                <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke-linecap="round" />
+              </svg>
+              <input
+                id="motDePasse"
+                [type]="showPassword() ? 'text' : 'password'"
+                formControlName="motDePasse"
+                minlength="8"
+                maxlength="255"
+                placeholder="8 caractères minimum"
+                class="form-control form-control--password"
+                [class.is-invalid]="
+                  registerForm.controls.motDePasse.touched &&
+                  registerForm.controls.motDePasse.invalid
+                "
+              />
+              <button
+                type="button"
+                class="eye-btn"
+                (click)="togglePasswordVisibility()"
+                [attr.aria-label]="
+                  showPassword() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'
+                "
+              >
+                @if (showPassword()) {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
+                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                } @else {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
+                    <path
+                      d="M17.94 17.94A10.07 10.07 0 0 1 12 19c-7 0-11-7-11-7a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"
+                      stroke-linecap="round"
+                    />
+                    <path d="M1 1l22 22" stroke-linecap="round" />
+                  </svg>
+                }
+              </button>
+            </div>
+            @if (
+              registerForm.controls.motDePasse.touched &&
+              registerForm.controls.motDePasse.hasError('required')
+            ) {
+              <small class="error-text">Le mot de passe est obligatoire.</small>
+            }
+            @if (
+              registerForm.controls.motDePasse.touched &&
+              (registerForm.controls.motDePasse.hasError('minlength') ||
+                registerForm.controls.motDePasse.hasError('maxlength'))
+            ) {
+              <small class="error-text"
+                >Le mot de passe doit contenir entre 8 et 255 caractères.</small
+              >
+            }
+          </div>
+
+          <!-- Bouton principal -->
+          <button type="submit" class="btn-submit" [disabled]="isSubmitting()">
+            <span>{{ isSubmitting() ? 'Inscription...' : 'Créer mon compte' }}</span>
+            <span class="arrow">→</span>
+          </button>
+        </form>
+
+        <p class="login-prompt">
+          Vous avez déjà un compte ?
+          <a routerLink="auth/login">Se connecter</a>
+        </p>
+      </div>
+
+      <!-- Mention de sécurité sous la carte -->
+      <div class="rgpd-footer">
+        <svg
+          class="rgpd-shield"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>Inscription sécurisée • Données médicales protégées</span>
+      </div>
+    </section>
+  </div>
+</div>
