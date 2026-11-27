@@ -1,0 +1,8 @@
+export type ErrorCode =
+  | 'VALIDATION_ERROR'
+  | 'RESOURCE_NOT_FOUND'
+  | 'CONFLICT'
+  | 'BUSINESS_ERROR'
+  | 'UNAUTHORIZED'
+  | 'ACCESS_DENIED'
+  | 'INTERNAL_ERROR';

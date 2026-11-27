@@ -1,13 +1,8 @@
 import { Component, inject, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-
-export interface InscrireUtilisateurRequest {
-  nom: string;
-  prenom: string;
-  email: string;
-  motDePasse: string;
-}
+import { InscrireUtilisateurRequest } from '@core/models/auth/inscrire-utilisateur-request.model';
+import { AuthService } from '@features/auth/services/auth.service';
 
 @Component({
   selector: 'app-register-page.component',
@@ -18,9 +13,9 @@ export interface InscrireUtilisateurRequest {
 })
 export class RegisterPageComponent {
 
-
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
 
   readonly logoImage = 'assets/landing/pediasaas-logo.png';
   readonly doctorChildImage = 'assets/landing/doctor-child.png';
@@ -36,8 +31,16 @@ export class RegisterPageComponent {
   registerForm = this.fb.nonNullable.group({
     nom: ['', [Validators.required, Validators.maxLength(100)]],
     prenom: ['', [Validators.required, Validators.maxLength(100)]],
-    email: ['', [Validators.required, Validators.email, Validators.maxLength(180)]],
-    motDePasse: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(255)]]
+    email: ['', [
+      Validators.required,
+      Validators.email,
+      Validators.maxLength(180)
+    ]],
+    motDePasse: ['', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.maxLength(255)
+    ]]
   });
 
   togglePasswordVisibility(): void {
@@ -60,6 +63,7 @@ export class RegisterPageComponent {
     this.isSubmitting.set(true);
 
     const raw = this.registerForm.getRawValue();
+
     const payload: InscrireUtilisateurRequest = {
       nom: raw.nom.trim(),
       prenom: raw.prenom.trim(),
@@ -69,16 +73,28 @@ export class RegisterPageComponent {
 
     this.registerSubmitted.emit(payload);
 
-    // Remplacez ce bloc par votre appel AuthService vers l'endpoint d'inscription
-    setTimeout(() => {
-      this.isSubmitting.set(false);
-      this.successMessage.set('Compte créé avec succès. Vous pouvez maintenant vous connecter.');
-    }, 750);
+    this.authService.register(payload).subscribe({
+      next: () => {
+        this.isSubmitting.set(false);
 
-    this.gotoLogin();
-  }
+        this.successMessage.set(
+          'Compte créé avec succès. Vous pouvez maintenant vous connecter.'
+        );
 
-  gotoLogin() {
-    void this.router.navigate(['auth/login']);
+        setTimeout(() => {
+          void this.router.navigate(['/auth/login']);
+        }, 2500);
+
+      },
+
+      error: (error) => {
+        this.isSubmitting.set(false);
+
+        this.errorMessage.set(
+          error?.error?.message ??
+          'Une erreur est survenue lors de la création du compte.'
+        );
+      }
+    });
   }
 }

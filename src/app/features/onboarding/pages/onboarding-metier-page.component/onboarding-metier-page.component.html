@@ -1,55 +1,110 @@
 <div class="onboarding-page">
-  <!-- Décorations de fond -->
+
+  <!-- ============================================================
+       DÉCORATIONS DE FOND
+       ============================================================ -->
+
   <div class="onboarding-page__bg" aria-hidden="true">
     <span class="circle circle--top-left"></span>
     <span class="circle circle--top-right"></span>
     <span class="circle circle--bottom-right"></span>
   </div>
 
-  <!-- COLONNE GAUCHE (MASQUÉE SUR MOBILE, PHOTO CENTRÉE AU NIVEAU DES FORMULAIRES SUR PC) -->
+
+  <!-- ============================================================
+       COLONNE GAUCHE
+       ============================================================ -->
+
   <aside class="onboarding-aside" aria-hidden="true">
-    <!-- Espace supérieur pour descendre la photo au niveau de la zone des étapes -->
+
     <div class="onboarding-aside__top-spacer"></div>
 
-    <!-- Photo positionnée au niveau / centre des étapes -->
     <div class="onboarding-aside__visual">
+
       <span class="orange-heart">🧡</span>
+
       <div class="photo-frame">
-        <img [src]="doctorChildImage" alt="" />
+        <img
+          [src]="doctorChildImage"
+          alt=""
+        />
       </div>
+
     </div>
 
-    <!-- Vague turquoise inférieure -->
     <div class="onboarding-aside__wave">
-      <svg viewBox="0 0 500 220" preserveAspectRatio="none">
+
+      <svg
+        viewBox="0 0 500 220"
+        preserveAspectRatio="none"
+      >
         <path
           fill="#7AD7DF"
           fill-opacity="0.55"
           d="M0,70 C160,30 320,120 500,190 L500,220 L0,220 Z"
         />
-        <path fill="#00A8B5" d="M0,45 C180,55 310,130 430,220 L0,220 Z" />
+
+        <path
+          fill="#00A8B5"
+          d="M0,45 C180,55 310,130 430,220 L0,220 Z"
+        />
       </svg>
+
       <div class="wave-caption">
+
         <div class="wave-icons">
           <span>🩺</span>
           <span>💗</span>
         </div>
+
         <strong>PediaSaaS</strong>
-        <p>Soigner • Accompagner • Grandir</p>
+
+        <p>
+          Soigner • Accompagner • Grandir
+        </p>
+
       </div>
+
     </div>
+
   </aside>
 
-  <!-- COLONNE PRINCIPALE : LOGO + DEVISE + STEPPER + CARTE D'ÉTAPES -->
+
+  <!-- ============================================================
+       COLONNE PRINCIPALE
+       ============================================================ -->
+
   <main class="onboarding-main">
+
+    <!-- HEADER -->
+
     <header class="onboarding-header">
-      <a href="#" class="brand-logo" aria-label="PediaSaaS Accueil">
-        <img [src]="logoImage" alt="PediaSaaS — Grandir en bonne santé" class="brand-logo__img" />
+
+      <a
+        href="#"
+        class="brand-logo"
+        aria-label="PediaSaaS Accueil"
+      >
+
+        <img
+          [src]="logoImage"
+          alt="PediaSaaS — Grandir en bonne santé"
+          class="brand-logo__img"
+        />
+
       </a>
 
       <div class="handwritten-motto">
-        <span>Ensemble pour la santé de nos enfants</span>
-        <svg viewBox="0 0 180 18" fill="none">
+
+        <span>
+          Ensemble pour la santé de nos enfants
+        </span>
+
+        <svg
+          viewBox="0 0 180 18"
+          fill="none"
+          aria-hidden="true"
+        >
           <path
             d="M4 13C55 3 125 3 176 11"
             stroke="#F39237"
@@ -57,195 +112,570 @@
             stroke-linecap="round"
           />
         </svg>
+
       </div>
+
     </header>
 
+
     <div class="onboarding-container">
-      <!-- Sous-titre seul (titre Bienvenue retiré) -->
+
+      <!-- ========================================================
+           INTRODUCTION
+           ======================================================== -->
+
       <div class="onboarding-subtitle-block">
-        <h1>Configurons votre espace professionnel en quelques étapes</h1>
+
+        <h1>
+          Configurons votre espace professionnel
+          en quelques étapes
+        </h1>
+
       </div>
 
-      <!-- STEPPER HORIZONTAL 4 ÉTAPES -->
-      <nav class="stepper" aria-label="Étapes de configuration">
+
+      <!-- ========================================================
+           STEPPER
+           ======================================================== -->
+
+      <nav
+        class="stepper"
+        aria-label="Étapes de configuration"
+      >
+
         <div class="stepper__track">
-          <div class="stepper__progress" [style.width.%]="progressPercent()"></div>
+
+          <div
+            class="stepper__progress"
+            [style.width.%]="progress()"
+          ></div>
+
         </div>
 
         @for (step of steps; track step.number) {
+
           <button
             type="button"
             class="stepper__item"
             [class.is-active]="currentStep() === step.number"
             [class.is-completed]="currentStep() > step.number"
-            [disabled]="step.number > currentStep() || isCompleted()"
-            (click)="goToStep(step.number)"
+            [disabled]="
+              step.number > currentStep() ||
+              isCompleted()
+            "
           >
+
             <span class="stepper__circle">
+
               @if (currentStep() > step.number) {
                 ✓
               } @else {
                 {{ step.number }}
               }
+
             </span>
-            <span class="stepper__label">{{ step.label }}</span>
+
+            <span class="stepper__label">
+              {{ step.label }}
+            </span>
+
           </button>
+
         }
+
       </nav>
 
-      <!-- CARTE PRINCIPALE DU WIZARD -->
+
+      <!-- ========================================================
+           CARTE PRINCIPALE
+           ======================================================== -->
+
       <section class="wizard-card">
+
+        <!-- ======================================================
+             SUCCÈS
+             ====================================================== -->
+
         @if (isCompleted()) {
+
           <div class="success-state">
-            <div class="success-state__icon">✓</div>
-            <h2>Votre espace PediaSaaS est prêt !</h2>
+
+            <div class="success-state__icon">
+              ✓
+            </div>
+
+            <h2>
+              Votre espace PediaSaaS est prêt !
+            </h2>
+
             <p>
-              Bienvenue <strong>{{ companyForm.controls.name.value }}</strong>. Votre formule
-              <strong>{{ selectedPlanInfo().name }}</strong> a bien été activée avec un essai
-              gratuit de 30 jours.
+              Bienvenue
+              <strong>
+                {{ companyForm.controls.nom.value }}
+              </strong>.
+
+              Votre configuration
+              <strong>
+                {{ recapitulatif()?.planNom }}
+              </strong>
+              a bien été enregistrée.
             </p>
-            <a (click)="gotoDashboard()" class="btn btn--primary btn--lg">
-              Accéder à mon tableau de bord <span class="arrow">→</span>
-            </a>
+
+            <button
+              type="button"
+              class="btn btn--primary btn--lg"
+              (click)="gotoDashboard()"
+            >
+              Accéder à mon tableau de bord
+              <span class="arrow">→</span>
+            </button>
+
           </div>
+
         } @else {
-          <!-- ============================================================
-               ÉTAPE 1 : QUEL EST VOTRE PROFIL ?
-               ============================================================ -->
+
+          <!-- ====================================================
+               ÉTAPE 1 — PROFIL
+               ==================================================== -->
+
           @if (currentStep() === 1) {
+
             <div class="step-panel">
+
               <div class="step-accent-bar"></div>
-              <h2 class="step-title">Quel est votre profil ?</h2>
+
+              <h2 class="step-title">
+                Quel est votre profil ?
+              </h2>
+
               <p class="step-subtitle">
-                Choisissez le type de profil avec lequel vous allez utiliser PediaSaaS.
+                Choisissez le type de profil avec lequel
+                vous allez utiliser PediaSaaS.
               </p>
 
-              <div class="profile-grid">
-                @for (option of profileOptions; track option.id) {
+
+              @if (isLoadingRoles()) {
+
+                <div class="loading-state">
+
+                  <div class="loading-state__spinner"></div>
+
+                  <span>
+                    Chargement des profils disponibles...
+                  </span>
+
+                </div>
+
+              } @else if (roles().length === 0) {
+
+                <div class="empty-state">
+
+                  <div class="empty-state__icon">
+                    !
+                  </div>
+
+                  <h3>
+                    Aucun profil disponible
+                  </h3>
+
+                  <p>
+                    Aucun profil professionnel n'est actuellement
+                    disponible pour l'inscription.
+                  </p>
+
                   <button
                     type="button"
-                    class="profile-card"
-                    [class.is-selected]="selectedProfile() === option.id"
-                    (click)="selectProfile(option.id)"
+                    class="btn btn--outline"
+                    (click)="chargerRoles()"
                   >
-                    @if (selectedProfile() === option.id) {
-                      <span class="profile-card__check" aria-hidden="true">✓</span>
-                    }
-
-                    <div class="profile-card__illustration">
-                      @if (option.id === 'independent_doctor') {
-                        <svg viewBox="0 0 120 110" fill="none">
-                          <circle cx="60" cy="56" r="46" fill="#D4F2F6" />
-                          <path d="M28 96C31 79 44 72 60 72C76 72 89 79 92 96" fill="#FFFFFF" />
-                          <path d="M47 73L60 88L73 73" stroke="#00A8B5" stroke-width="2.5" />
-                          <circle cx="60" cy="46" r="18" fill="#8D5524" />
-                          <path d="M42 42C42 31 50 25 60 25C70 25 78 31 78 42" fill="#1E293B" />
-                          <rect
-                            x="47"
-                            y="42"
-                            width="11"
-                            height="7"
-                            rx="2"
-                            stroke="#1E293B"
-                            stroke-width="2"
-                            fill="#FFF"
-                            fill-opacity="0.3"
-                          />
-                          <rect
-                            x="62"
-                            y="42"
-                            width="11"
-                            height="7"
-                            rx="2"
-                            stroke="#1E293B"
-                            stroke-width="2"
-                            fill="#FFF"
-                            fill-opacity="0.3"
-                          />
-                          <path d="M58 45H62" stroke="#1E293B" stroke-width="2" />
-                          <path
-                            d="M46 76V88M74 76V86"
-                            stroke="#112347"
-                            stroke-width="2.5"
-                            stroke-linecap="round"
-                          />
-                          <circle cx="74" cy="88" r="4" fill="#00A8B5" />
-                        </svg>
-                      } @else {
-                        <svg viewBox="0 0 130 110" fill="none">
-                          <ellipse cx="65" cy="58" rx="52" ry="42" fill="#D4F2F6" />
-                          <circle cx="24" cy="68" r="14" fill="#6BBF59" />
-                          <circle cx="106" cy="68" r="14" fill="#6BBF59" />
-                          <rect x="34" y="34" width="62" height="58" rx="4" fill="#FFFFFF" />
-                          <path d="M30 35L42 22H88L100 35H30Z" fill="#F39237" />
-                          <rect x="61" y="25" width="8" height="3" fill="#FFFFFF" />
-                          <rect x="63.5" y="22.5" width="3" height="8" fill="#FFFFFF" />
-                          <rect x="42" y="44" width="10" height="10" rx="1.5" fill="#4DA8DA" />
-                          <rect x="78" y="44" width="10" height="10" rx="1.5" fill="#4DA8DA" />
-                          <rect x="42" y="61" width="10" height="10" rx="1.5" fill="#4DA8DA" />
-                          <rect x="78" y="61" width="10" height="10" rx="1.5" fill="#4DA8DA" />
-                          <rect x="57" y="70" width="16" height="22" rx="2" fill="#1D6FA5" />
-                        </svg>
-                      }
-                    </div>
-
-                    <h3 class="profile-card__title">{{ option.title }}</h3>
-                    <p class="profile-card__desc">{{ option.description }}</p>
+                    Réessayer
                   </button>
-                }
-              </div>
+
+                </div>
+
+              } @else {
+
+                <div class="profile-grid">
+
+                  @for (
+                    role of roles();
+                    track role.uuid
+                  ) {
+
+                    <button
+                      type="button"
+                      class="profile-card"
+                      [class.is-selected]="
+                        selectedRoleUuid() === role.uuid
+                      "
+                      (click)="selectRole(role)"
+                    >
+
+                      @if (
+                        selectedRoleUuid() === role.uuid
+                      ) {
+
+                        <span
+                          class="profile-card__check"
+                          aria-hidden="true"
+                        >
+                          ✓
+                        </span>
+
+                      }
+
+
+                      <!-- ==========================================
+                           ILLUSTRATION MÉDECIN
+                           ========================================== -->
+
+                      <div class="profile-card__illustration">
+
+                        @if (
+                          role.code === 'MEDECIN_INDEPENDANT'
+                        ) {
+
+                          <svg
+                            viewBox="0 0 120 110"
+                            fill="none"
+                            aria-hidden="true"
+                          >
+
+                            <circle
+                              cx="60"
+                              cy="56"
+                              r="46"
+                              fill="#D4F2F6"
+                            />
+
+                            <path
+                              d="M28 96C31 79 44 72 60 72C76 72 89 79 92 96"
+                              fill="#FFFFFF"
+                            />
+
+                            <path
+                              d="M47 73L60 88L73 73"
+                              stroke="#00A8B5"
+                              stroke-width="2.5"
+                            />
+
+                            <circle
+                              cx="60"
+                              cy="46"
+                              r="18"
+                              fill="#8D5524"
+                            />
+
+                            <path
+                              d="M42 42C42 31 50 25 60 25C70 25 78 31 78 42"
+                              fill="#1E293B"
+                            />
+
+                            <rect
+                              x="47"
+                              y="42"
+                              width="11"
+                              height="7"
+                              rx="2"
+                              stroke="#1E293B"
+                              stroke-width="2"
+                              fill="#FFF"
+                              fill-opacity="0.3"
+                            />
+
+                            <rect
+                              x="62"
+                              y="42"
+                              width="11"
+                              height="7"
+                              rx="2"
+                              stroke="#1E293B"
+                              stroke-width="2"
+                              fill="#FFF"
+                              fill-opacity="0.3"
+                            />
+
+                            <path
+                              d="M58 45H62"
+                              stroke="#1E293B"
+                              stroke-width="2"
+                            />
+
+                            <path
+                              d="M46 76V88M74 76V86"
+                              stroke="#112347"
+                              stroke-width="2.5"
+                              stroke-linecap="round"
+                            />
+
+                            <circle
+                              cx="74"
+                              cy="88"
+                              r="4"
+                              fill="#00A8B5"
+                            />
+
+                          </svg>
+
+
+                        } @else if (
+                          role.code === 'ADMIN_CABINET'
+                        ) {
+
+                          <!-- ========================================
+                               ILLUSTRATION CABINET
+                               ======================================== -->
+
+                          <svg
+                            viewBox="0 0 130 110"
+                            fill="none"
+                            aria-hidden="true"
+                          >
+
+                            <ellipse
+                              cx="65"
+                              cy="58"
+                              rx="52"
+                              ry="42"
+                              fill="#D4F2F6"
+                            />
+
+                            <circle
+                              cx="24"
+                              cy="68"
+                              r="14"
+                              fill="#6BBF59"
+                            />
+
+                            <circle
+                              cx="106"
+                              cy="68"
+                              r="14"
+                              fill="#6BBF59"
+                            />
+
+                            <rect
+                              x="34"
+                              y="34"
+                              width="62"
+                              height="58"
+                              rx="4"
+                              fill="#FFFFFF"
+                            />
+
+                            <path
+                              d="M30 35L42 22H88L100 35H30Z"
+                              fill="#F39237"
+                            />
+
+                            <rect
+                              x="61"
+                              y="25"
+                              width="8"
+                              height="3"
+                              fill="#FFFFFF"
+                            />
+
+                            <rect
+                              x="63.5"
+                              y="22.5"
+                              width="3"
+                              height="8"
+                              fill="#FFFFFF"
+                            />
+
+                            <rect
+                              x="42"
+                              y="44"
+                              width="10"
+                              height="10"
+                              rx="1.5"
+                              fill="#4DA8DA"
+                            />
+
+                            <rect
+                              x="78"
+                              y="44"
+                              width="10"
+                              height="10"
+                              rx="1.5"
+                              fill="#4DA8DA"
+                            />
+
+                            <rect
+                              x="42"
+                              y="61"
+                              width="10"
+                              height="10"
+                              rx="1.5"
+                              fill="#4DA8DA"
+                            />
+
+                            <rect
+                              x="78"
+                              y="61"
+                              width="10"
+                              height="10"
+                              rx="1.5"
+                              fill="#4DA8DA"
+                            />
+
+                            <rect
+                              x="57"
+                              y="70"
+                              width="16"
+                              height="22"
+                              rx="2"
+                              fill="#1D6FA5"
+                            />
+
+                          </svg>
+
+                        } @else {
+
+                          <div class="profile-card__fallback">
+                            {{ role.libelle.charAt(0) }}
+                          </div>
+
+                        }
+
+                      </div>
+
+
+                      <h3 class="profile-card__title">
+                        {{ role.libelle }}
+                      </h3>
+
+
+                      <p class="profile-card__desc">
+
+                        @if (
+                          role.code === 'MEDECIN_INDEPENDANT'
+                        ) {
+
+                          Exercez votre activité médicale
+                          en tant que médecin indépendant.
+
+                        } @else if (
+                          role.code === 'ADMIN_CABINET'
+                        ) {
+
+                          Gérez votre cabinet, votre équipe
+                          et votre activité professionnelle.
+
+                        } @else {
+
+                          {{ role.libelle }}
+
+                        }
+
+                      </p>
+
+                    </button>
+
+                  }
+
+                </div>
+
+              }
+
             </div>
+
           }
 
-          <!-- ============================================================
-               ÉTAPE 2 : VOTRE ENTREPRISE / CABINET
-               ============================================================ -->
+
+          <!-- ====================================================
+               ÉTAPE 2 — ENTREPRISE / CABINET
+               ==================================================== -->
+
           @if (currentStep() === 2) {
+
             <div class="step-panel">
+
               <div class="step-accent-bar"></div>
-              <h2 class="step-title">Votre entreprise</h2>
+
+              <h2 class="step-title">
+                Votre entreprise
+              </h2>
+
               <p class="step-subtitle">
-                Renseignez les coordonnées de votre cabinet médical ou établissement de santé.
+                Renseignez les coordonnées de votre cabinet
+                médical ou établissement de santé.
               </p>
 
-              <form [formGroup]="companyForm" class="company-form" novalidate>
+
+              <form
+                [formGroup]="companyForm"
+                class="company-form"
+                novalidate
+                (ngSubmit)="nextStep()"
+              >
+
                 <div class="form-grid">
+
+
+                  <!-- NOM -->
+
                   <div class="form-group form-group--full">
-                    <label for="companyName"
-                      >Nom du cabinet ou de l'entreprise <span>*</span></label
-                    >
+
+                    <label for="companyName">
+                      Nom du cabinet ou de l'entreprise
+                      <span>*</span>
+                    </label>
+
                     <input
                       id="companyName"
                       type="text"
-                      formControlName="name"
+                      formControlName="nom"
                       placeholder="Ex : Cabinet Pédiatrique Les Almadies"
                       class="form-control"
                       [class.is-invalid]="
-                        companyForm.controls.name.touched && companyForm.controls.name.invalid
+                        companyForm.controls.nom.touched &&
+                        companyForm.controls.nom.invalid
                       "
                     />
-                    @if (companyForm.controls.name.touched && companyForm.controls.name.invalid) {
-                      <small class="error-msg">Le nom de la structure est obligatoire.</small>
+
+                    @if (
+                      companyForm.controls.nom.touched &&
+                      companyForm.controls.nom.invalid
+                    ) {
+
+                      <small class="error-msg">
+                        Le nom de la structure est obligatoire.
+                      </small>
+
                     }
+
                   </div>
 
-                  <div class="form-group">
-                    <label for="specialty">Spécialité principale <span>*</span></label>
-                    <select id="specialty" formControlName="specialty" class="form-control">
-                      <option value="Pédiatrie générale">Pédiatrie générale</option>
-                      <option value="Néonatologie">Néonatologie</option>
-                      <option value="Médecine générale & enfant">
-                        Médecine générale &amp; enfant
-                      </option>
-                      <option value="Clinique mère-enfant">Clinique mère-enfant</option>
-                      <option value="Centre médical pluridisciplinaire">
-                        Centre médical pluridisciplinaire
-                      </option>
-                    </select>
-                  </div>
+
+                  <!-- SPÉCIALITÉ -->
 
                   <div class="form-group">
-                    <label for="companyEmail">Email professionnel <span>*</span></label>
+
+                    <label for="specialite">
+                      Spécialité principale
+                    </label>
+
+                    <input
+                      id="specialite"
+                      type="text"
+                      formControlName="specialite"
+                      placeholder="Ex : Pédiatrie générale"
+                      class="form-control"
+                    />
+
+                  </div>
+
+
+                  <!-- EMAIL -->
+
+                  <div class="form-group">
+
+                    <label for="companyEmail">
+                      Email professionnel
+                    </label>
+
                     <input
                       id="companyEmail"
                       type="email"
@@ -253,294 +683,687 @@
                       placeholder="contact@cabinet-pediatrie.sn"
                       class="form-control"
                       [class.is-invalid]="
-                        companyForm.controls.email.touched && companyForm.controls.email.invalid
+                        companyForm.controls.email.touched &&
+                        companyForm.controls.email.invalid
                       "
                     />
-                    @if (companyForm.controls.email.touched && companyForm.controls.email.invalid) {
-                      <small class="error-msg">Adresse e-mail valide requise.</small>
+
+                    @if (
+                      companyForm.controls.email.touched &&
+                      companyForm.controls.email.invalid
+                    ) {
+
+                      <small class="error-msg">
+                        Adresse e-mail valide requise.
+                      </small>
+
                     }
+
                   </div>
 
-                  <div class="form-group">
-                    <label for="phone">Téléphone fixe <span>*</span></label>
-                    <input
-                      id="phone"
-                      type="tel"
-                      formControlName="phone"
-                      placeholder="+221 33 800 00 00"
-                      class="form-control"
-                      [class.is-invalid]="
-                        companyForm.controls.phone.touched && companyForm.controls.phone.invalid
-                      "
-                    />
-                    @if (companyForm.controls.phone.touched && companyForm.controls.phone.invalid) {
-                      <small class="error-msg">Numéro de téléphone requis.</small>
-                    }
-                  </div>
+
+                  <!-- TÉLÉPHONE -->
 
                   <div class="form-group">
-                    <label for="mobile">Téléphone mobile <span>*</span></label>
+
+                    <label for="telephone">
+                      Téléphone
+                      <span>*</span>
+                    </label>
+
                     <input
-                      id="mobile"
+                      id="telephone"
                       type="tel"
-                      formControlName="mobile"
+                      formControlName="telephone"
                       placeholder="+221 77 000 00 00"
                       class="form-control"
                       [class.is-invalid]="
-                        companyForm.controls.mobile.touched && companyForm.controls.mobile.invalid
+                        companyForm.controls.telephone.touched &&
+                        companyForm.controls.telephone.invalid
                       "
                     />
+
                     @if (
-                      companyForm.controls.mobile.touched && companyForm.controls.mobile.invalid
+                      companyForm.controls.telephone.touched &&
+                      companyForm.controls.telephone.invalid
                     ) {
-                      <small class="error-msg">Numéro mobile requis.</small>
+
+                      <small class="error-msg">
+                        Numéro de téléphone requis.
+                      </small>
+
                     }
+
                   </div>
 
-                  <div class="form-group">
-                    <label for="city">Ville <span>*</span></label>
-                    <input
-                      id="city"
-                      type="text"
-                      formControlName="city"
-                      placeholder="Dakar"
-                      class="form-control"
-                      [class.is-invalid]="
-                        companyForm.controls.city.touched && companyForm.controls.city.invalid
-                      "
-                    />
-                  </div>
+
+                  <!-- NUMÉRO ORDRE -->
 
                   <div class="form-group">
-                    <label for="regNum">N° Agrément / Ordre (optionnel)</label>
+
+                    <label for="numeroOrdreMedecin">
+                      N° ordre médecin
+                    </label>
+
                     <input
-                      id="regNum"
+                      id="numeroOrdreMedecin"
                       type="text"
-                      formControlName="registrationNumber"
-                      placeholder="Ex : ORD-SN-2026-412"
+                      formControlName="numeroOrdreMedecin"
+                      placeholder="Ex : 12345"
                       class="form-control"
                     />
+
                   </div>
+
+
+                  <!-- ADRESSE -->
 
                   <div class="form-group form-group--full">
-                    <label for="address">Adresse complète <span>*</span></label>
-                    <input
+
+                    <label for="address">
+                      Adresse
+                    </label>
+
+                    <textarea
                       id="address"
-                      type="text"
-                      formControlName="address"
-                      placeholder="Rue, quartier, immeuble..."
+                      rows="3"
+                      formControlName="adresse"
+                      placeholder="Adresse complète du cabinet..."
                       class="form-control"
-                      [class.is-invalid]="
-                        companyForm.controls.address.touched && companyForm.controls.address.invalid
-                      "
-                    />
-                    @if (
-                      companyForm.controls.address.touched && companyForm.controls.address.invalid
-                    ) {
-                      <small class="error-msg">L'adresse du cabinet est obligatoire.</small>
-                    }
+                    ></textarea>
+
                   </div>
+
                 </div>
+
               </form>
+
             </div>
+
           }
 
-          <!-- ============================================================
-               ÉTAPE 3 : VOTRE ABONNEMENT (4 CARTES)
-               ============================================================ -->
+
+          <!-- ====================================================
+               ÉTAPE 3 — ABONNEMENT
+               ==================================================== -->
+
           @if (currentStep() === 3) {
+
             <div class="step-panel">
+
               <div class="step-accent-bar"></div>
-              <h2 class="step-title">Votre abonnement</h2>
+
+              <h2 class="step-title">
+                Votre abonnement
+              </h2>
+
               <p class="step-subtitle">
                 Sélectionnez la formule adaptée à votre structure.
-                <strong>30 jours d'essai gratuit</strong> sans engagement.
               </p>
 
-              <div class="plans-grid">
-                @for (plan of plans; track plan.id) {
-                  <article
-                    class="plan-card"
-                    [class.is-selected]="selectedPlanId() === plan.id"
-                    [class.is-highlighted]="plan.highlighted"
-                    (click)="selectPlan(plan.id)"
-                  >
-                    @if (plan.badge) {
-                      <span class="plan-card__badge">{{ plan.badge }}</span>
-                    }
 
-                    <div class="plan-card__head">
-                      <h3>{{ plan.name }}</h3>
-                      <span class="plan-card__radio">
-                        @if (selectedPlanId() === plan.id) {
-                          ✓
-                        }
-                      </span>
-                    </div>
+              @if (isLoadingPlans()) {
 
-                    <p class="plan-card__tagline">{{ plan.tagline }}</p>
+                <div class="loading-state">
 
-                    <div class="plan-card__price">
-                      <strong>{{ plan.priceMonthly }}</strong>
-                      @if (plan.period) {
-                        <span>{{ plan.period }}</span>
-                      }
-                    </div>
+                  <div class="loading-state__spinner"></div>
 
-                    <ul class="plan-card__features">
-                      @for (feat of plan.features; track feat) {
-                        <li><span class="tick">✓</span> {{ feat }}</li>
-                      }
-                    </ul>
+                  <span>
+                    Chargement des offres disponibles...
+                  </span>
 
-                    <button
-                      type="button"
-                      class="plan-card__select-btn"
-                      [class.active]="selectedPlanId() === plan.id"
+                </div>
+
+              } @else if (plans().length === 0) {
+
+                <div class="empty-state">
+
+                  <div class="empty-state__icon">
+                    !
+                  </div>
+
+                  <h3>
+                    Aucune offre disponible
+                  </h3>
+
+                  <p>
+                    Les offres d'abonnement ne sont actuellement
+                    pas disponibles.
+                  </p>
+
+                </div>
+
+              } @else {
+
+                <div class="plans-grid">
+
+                  @for (
+                    plan of plans();
+                    track plan.uuid
+                  ) {
+
+                    <article
+                      class="plan-card"
+                      [class.is-selected]="
+                        selectedPlanUuid() === plan.uuid
+                      "
+                      (click)="selectPlan(plan)"
                     >
-                      {{
-                        selectedPlanId() === plan.id
-                          ? 'Formule sélectionnée'
-                          : 'Choisir ' + plan.name
-                      }}
-                    </button>
-                  </article>
-                }
-              </div>
+
+                      <div class="plan-card__head">
+
+                        <h3>
+                          {{ plan.nom }}
+                        </h3>
+
+                        <span class="plan-card__radio">
+
+                          @if (
+                            selectedPlanUuid() === plan.uuid
+                          ) {
+                            ✓
+                          }
+
+                        </span>
+
+                      </div>
+
+
+                      @if (plan.description) {
+
+                        <p class="plan-card__tagline">
+                          {{ plan.description }}
+                        </p>
+
+                      }
+
+
+                      <div class="plan-card__price">
+
+                        <strong>
+                          {{ formatPrix(plan.prixMensuel) }}
+                        </strong>
+
+                        <span>
+                          FCFA / mois
+                        </span>
+
+                      </div>
+
+
+                      @if (plan.nombreUtilisateursMax) {
+
+                        <div class="plan-card__users">
+
+                          Jusqu'à
+                          <strong>
+                            {{ plan.nombreUtilisateursMax }}
+                          </strong>
+                          utilisateur(s)
+
+                        </div>
+
+                      }
+
+
+                      @if (plan.fonctionnalites.length > 0) {
+
+                        <ul class="plan-card__features">
+
+                          @for (
+                            fonctionnalite of plan.fonctionnalites;
+                            track fonctionnalite.uuid
+                          ) {
+
+                            <li>
+
+                              <span class="tick">
+                                ✓
+                              </span>
+
+                              {{ fonctionnalite.nom }}
+
+                            </li>
+
+                          }
+
+                        </ul>
+
+                      }
+
+
+                      <button
+                        type="button"
+                        class="plan-card__select-btn"
+                        [class.active]="
+                          selectedPlanUuid() === plan.uuid
+                       "
+                        (click)="$event.stopPropagation(); selectPlan(plan)"
+                      >
+
+                        @if (
+                          selectedPlanUuid() === plan.uuid
+                        ) {
+                          Formule sélectionnée
+                        } @else {
+                          Choisir {{ plan.nom }}
+                        }
+
+                      </button>
+
+                    </article>
+
+                  }
+
+                </div>
+
+              }
+
             </div>
+
           }
 
-          <!-- ============================================================
-               ÉTAPE 4 : VALIDATION & RÉCAPITULATIF (ÉTAPES 1 À 3)
-               ============================================================ -->
+
+          <!-- ====================================================
+               ÉTAPE 4 — VALIDATION
+               ==================================================== -->
+
           @if (currentStep() === 4) {
+
             <div class="step-panel">
+
               <div class="step-accent-bar"></div>
-              <h2 class="step-title">Validation de votre espace</h2>
+
+              <h2 class="step-title">
+                Validation de votre espace
+              </h2>
+
               <p class="step-subtitle">
-                Vérifiez le récapitulatif de vos informations avant de finaliser la création de
-                votre compte.
+                Vérifiez le récapitulatif de vos informations
+                avant de finaliser votre configuration.
               </p>
 
-              <div class="summary-grid">
-                <div class="summary-box">
-                  <div class="summary-box__header">
-                    <span class="summary-step-tag">1. Votre profil</span>
-                    <button type="button" class="edit-link" (click)="goToStep(1)">Modifier</button>
-                  </div>
-                  <div class="summary-box__body">
-                    <strong>{{ selectedProfileInfo().title }}</strong>
-                    <span>{{ selectedProfileInfo().description }}</span>
-                  </div>
+
+              @if (isLoadingRecapitulatif()) {
+
+                <div class="loading-state">
+
+                  <div class="loading-state__spinner"></div>
+
+                  <span>
+                    Préparation de votre récapitulatif...
+                  </span>
+
                 </div>
 
-                <div class="summary-box summary-box--accent">
-                  <div class="summary-box__header">
-                    <span class="summary-step-tag">3. Votre abonnement</span>
-                    <button type="button" class="edit-link" (click)="goToStep(3)">Modifier</button>
-                  </div>
-                  <div class="summary-box__body">
-                    <strong>Formule {{ selectedPlanInfo().name }}</strong>
-                    <span>
-                      {{ selectedPlanInfo().priceMonthly }} {{ selectedPlanInfo().period }} • Essai
-                      gratuit 30 jours
-                    </span>
-                  </div>
-                </div>
+              } @else if (recapitulatif()) {
 
-                <div class="summary-box summary-box--full">
-                  <div class="summary-box__header">
-                    <span class="summary-step-tag">2. Votre entreprise</span>
-                    <button type="button" class="edit-link" (click)="goToStep(2)">Modifier</button>
+                <div class="summary-grid">
+
+
+                  <!-- PROFIL -->
+
+                  <div class="summary-box">
+
+                    <div class="summary-box__header">
+
+                      <span class="summary-step-tag">
+                        1. Votre profil
+                      </span>
+
+                    </div>
+
+                    <div class="summary-box__body">
+
+                      <strong>
+                        {{ recapitulatif()?.roleLibelle }}
+                      </strong>
+
+                      <span>
+                        {{ recapitulatif()?.roleCode }}
+                      </span>
+
+                    </div>
+
                   </div>
-                  <dl class="summary-details">
-                    <div>
-                      <dt>Structure</dt>
-                      <dd>{{ companyForm.controls.name.value }}</dd>
+
+
+                  <!-- ABONNEMENT -->
+
+                  <div class="summary-box summary-box--accent">
+
+                    <div class="summary-box__header">
+
+                      <span class="summary-step-tag">
+                        3. Votre abonnement
+                      </span>
+
                     </div>
-                    <div>
-                      <dt>Spécialité</dt>
-                      <dd>{{ companyForm.controls.specialty.value }}</dd>
+
+                    <div class="summary-box__body">
+
+                      <strong>
+                        {{ recapitulatif()?.planNom }}
+                      </strong>
+
+                      <span>
+
+                        {{
+                          formatPrix(
+                            recapitulatif()?.prixMensuel ?? 0
+                          )
+                        }}
+
+                        FCFA / mois
+
+                      </span>
+
                     </div>
-                    <div>
-                      <dt>Email</dt>
-                      <dd>{{ companyForm.controls.email.value }}</dd>
+
+                  </div>
+
+
+                  <!-- ENTREPRISE -->
+
+                  <div class="summary-box summary-box--full">
+
+                    <div class="summary-box__header">
+
+                      <span class="summary-step-tag">
+                        2. Votre entreprise
+                      </span>
+
                     </div>
-                    <div>
-                      <dt>Téléphone / Mobile</dt>
-                      <dd>
-                        {{ companyForm.controls.phone.value }} /
-                        {{ companyForm.controls.mobile.value }}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt>Ville</dt>
-                      <dd>{{ companyForm.controls.city.value }}</dd>
-                    </div>
-                    <div>
-                      <dt>Adresse</dt>
-                      <dd>{{ companyForm.controls.address.value }}</dd>
-                    </div>
-                    @if (companyForm.controls.registrationNumber.value) {
+
+
+                    <dl class="summary-details">
+
                       <div>
-                        <dt>N° Agrément</dt>
-                        <dd>{{ companyForm.controls.registrationNumber.value }}</dd>
-                      </div>
-                    }
-                  </dl>
-                </div>
-              </div>
 
-              <label class="terms-check">
-                <input
-                  type="checkbox"
-                  [checked]="acceptedTerms()"
-                  (change)="acceptedTerms.set($any($event.target).checked)"
-                />
-                <span>
-                  J'accepte les <a href="#cgu">Conditions Générales d'Utilisation</a> et la
-                  <a href="#rgpd">Politique de confidentialité des données de santé</a>.
-                </span>
-              </label>
+                        <dt>
+                          Structure
+                        </dt>
+
+                        <dd>
+                          {{ recapitulatif()?.nomEntreprise }}
+                        </dd>
+
+                      </div>
+
+
+                      <div>
+
+                        <dt>
+                          Téléphone
+                        </dt>
+
+                        <dd>
+                          {{ recapitulatif()?.telephone }}
+                        </dd>
+
+                      </div>
+
+
+                      @if (recapitulatif()?.email) {
+
+                        <div>
+
+                          <dt>
+                            Email
+                          </dt>
+
+                          <dd>
+                            {{ recapitulatif()?.email }}
+                          </dd>
+
+                        </div>
+
+                      }
+
+
+                      @if (recapitulatif()?.adresse) {
+
+                        <div>
+
+                          <dt>
+                            Adresse
+                          </dt>
+
+                          <dd>
+                            {{ recapitulatif()?.adresse }}
+                          </dd>
+
+                        </div>
+
+                      }
+
+                    </dl>
+
+                  </div>
+
+                </div>
+
+
+                <!-- FONCTIONNALITÉS -->
+
+                @if (
+                  recapitulatif()?.fonctionnalites?.length
+                ) {
+
+                  <div class="recap-features">
+
+                    <h3>
+                      Fonctionnalités incluses
+                    </h3>
+
+                    <div class="recap-features__list">
+
+                      @for (
+                        fonctionnalite of
+                        recapitulatif()?.fonctionnalites;
+                        track fonctionnalite.uuid
+                      ) {
+
+                        <div class="recap-feature">
+
+                          <span>
+                            ✓
+                          </span>
+
+                          <div>
+
+                            <strong>
+                              {{ fonctionnalite.nom }}
+                            </strong>
+
+                            @if (
+                              fonctionnalite.description
+                            ) {
+
+                              <p>
+                                {{ fonctionnalite.description }}
+                              </p>
+
+                            }
+
+                          </div>
+
+                        </div>
+
+                      }
+
+                    </div>
+
+                  </div>
+
+                }
+
+
+                <!-- CONDITIONS -->
+
+                <label class="terms-check">
+
+                  <input
+                    type="checkbox"
+                    [checked]="acceptedTerms()"
+                    (change)="
+                      acceptedTerms.set(
+                        $any($event.target).checked
+                      )
+                    "
+                  />
+
+                  <span>
+
+                    J'accepte les
+                    <a href="#cgu">
+                      Conditions Générales d'Utilisation
+                    </a>
+                    et la
+                    <a href="#rgpd">
+                      Politique de confidentialité
+                    </a>
+                    de PediaSaaS.
+
+                  </span>
+
+                </label>
+
+              }
+
             </div>
+
           }
 
-          <!-- BARRE D'ACTIONS DU WIZARD -->
-          <div class="wizard-actions" [class.has-prev]="currentStep() > 1">
+
+          <!-- ====================================================
+               BARRE D'ACTIONS
+               ==================================================== -->
+
+          <div
+            class="wizard-actions"
+            [class.has-prev]="currentStep() > 1"
+          >
+
             @if (currentStep() > 1) {
-              <button type="button" class="btn btn--outline" (click)="prevStep()">
-                <span class="arrow">←</span> Précédent
+
+              <button
+                type="button"
+                class="btn btn--outline"
+                [disabled]="isSubmitting()"
+                (click)="previousStep()"
+              >
+
+                <span class="arrow">
+                  ←
+                </span>
+
+                Précédent
+
               </button>
+
             }
 
+
             @if (currentStep() < 4) {
-              <button type="button" class="btn btn--primary" (click)="nextStep()">
-                <span>Continuer</span>
-                <span class="arrow">→</span>
-              </button>
-            } @else {
+
               <button
                 type="button"
                 class="btn btn--primary"
-                [disabled]="!acceptedTerms() || isSubmitting()"
+                [disabled]="
+                  isSubmitting() ||
+                  (currentStep() === 1 &&
+                    !selectedRoleUuid()) ||
+                  (currentStep() === 3 &&
+                    !selectedPlanUuid())
+                "
+                (click)="nextStep()"
+              >
+
+                @if (isSubmitting()) {
+
+                  <span>
+                    Enregistrement...
+                  </span>
+
+                } @else {
+
+                  <span>
+                    Continuer
+                  </span>
+
+                  <span class="arrow">
+                    →
+                  </span>
+
+                }
+
+              </button>
+
+            } @else {
+
+              <button
+                type="button"
+                class="btn btn--primary"
+                [disabled]="
+                  !acceptedTerms() ||
+                  isSubmitting() ||
+                  isLoadingRecapitulatif()
+                "
                 (click)="submitOnboarding()"
               >
-                <span>{{
-                  isSubmitting() ? 'Finalisation...' : 'Valider et créer mon espace'
-                }}</span>
-                <span class="arrow">✓</span>
+
+                <span>
+
+                  @if (isSubmitting()) {
+                    Finalisation...
+                  } @else {
+                    Valider et créer mon espace
+                  }
+
+                </span>
+
+                <span class="arrow">
+                  ✓
+                </span>
+
               </button>
+
             }
+
           </div>
+
         }
+
       </section>
 
-      <!-- Indicateur de pagination bas droite -->
-      <div class="bottom-dots" aria-hidden="true">
-        @for (step of steps; track step.number) {
-          <span [class.active]="currentStep() === step.number"></span>
+
+      <!-- ========================================================
+           INDICATEUR BAS
+           ======================================================== -->
+
+      <div
+        class="bottom-dots"
+        aria-hidden="true"
+      >
+
+        @for (
+          step of steps;
+          track step.number
+        ) {
+
+          <span
+            [class.active]="
+              currentStep() === step.number
+            "
+          ></span>
+
         }
+
       </div>
+
     </div>
+
   </main>
+
 </div>

@@ -1,206 +1,458 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-type RoleCode = 'MEDECIN_INDEPENDANT' | 'ADMIN_CABINET';
-
-export type ProfileType = 'independent_doctor' | 'clinic_admin';
-export type PlanId = 'starter' | 'standard' | 'professional' | 'enterprise';
-
-export interface ProfileOption {
-  id: ProfileType;
-  title: string;
-  description: string;
-}
-
-export interface SubscriptionPlan {
-  id: PlanId;
-  name: string;
-  tagline: string;
-  priceMonthly: string;
-  period: string;
-  badge?: string;
-  highlighted?: boolean;
-  features: string[];
-}
+import { RoleOnboardingResponse } from '@core/models/onboarding/role-onboarding-response.model';
+import { OnboardingRoleRequest } from '@core/models/onboarding/onboarding-role-request.model';
+import { OnboardingEntrepriseRequest } from '@core/models/onboarding/onboarding-entreprise-request.model';
+import { OnboardingPlanRequest } from '@core/models/onboarding/onboarding-plan-request.model';
+import { OnboardingRecapitulatifResponse } from '@core/models/onboarding/onboarding-recapitulatif-response.model';
+import { PlanAbonnementOnboardingResponse } from '@core/models/abonnement/plan-abonnement-onboarding-response.model';
+import { OnboardingService } from '@features/onboarding/service/onboarding.service';
+import { AbonnementService } from '@features/abonnement/services/abonnement.service';
 
 @Component({
   selector: 'app-onboarding-metier-page.component',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule
+  ],
   templateUrl: './onboarding-metier-page.component.html',
   styleUrl: './onboarding-metier-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OnboardingMetierPageComponent {
+export class OnboardingMetierPageComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly onboardingService = inject(OnboardingService);
+  private readonly abonnementService = inject(AbonnementService);
 
   readonly doctorChildImage = 'assets/landing/doctor-child.png';
+
   readonly logoImage = 'assets/landing/pediasaas-logo.png';
 
   readonly steps = [
-    { number: 1, label: 'Votre rôle' },
-    { number: 2, label: 'Votre entreprise' },
-    { number: 3, label: 'Votre abonnement' },
-    { number: 4, label: 'Validation' }
-  ];
-
-  readonly profileOptions: ProfileOption[] = [
     {
-      id: 'independent_doctor',
-      title: 'Médecin indépendant',
-      description: 'Exercez seul votre activité'
+      number: 1,
+      label: 'Votre rôle'
     },
     {
-      id: 'clinic_admin',
-      title: 'Administrateur de cabinet',
-      description: 'Gérez votre cabinet et votre équipe'
+      number: 2,
+      label: 'Votre entreprise'
+    },
+    {
+      number: 3,
+      label: 'Votre abonnement'
+    },
+    {
+      number: 4,
+      label: 'Validation'
     }
   ];
 
-  readonly plans: SubscriptionPlan[] = [
-    {
-      id: 'starter',
-      name: 'Starter',
-      tagline: 'Idéal pour démarrer sereinement',
-      priceMonthly: '15 000 FCFA',
-      period: '/ mois',
-      features: [
-        'Jusqu’à 200 dossiers patients',
-        'Agenda & prise de rendez-vous',
-        'Ordonnances numériques',
-        'Support par e-mail'
-      ]
-    },
-    {
-      id: 'standard',
-      name: 'Standard',
-      tagline: 'Pour une pratique pédiatrique régulière',
-      priceMonthly: '29 000 FCFA',
-      period: '/ mois',
-      features: [
-        'Patients illimités',
-        'Courbes de croissance OMS & vaccins',
-        'Rappels SMS automatiques',
-        'Facturation & reçus patients'
-      ]
-    },
-    {
-      id: 'professional',
-      name: 'Professionnel',
-      tagline: 'Le choix complet des cabinets actifs',
-      priceMonthly: '49 000 FCFA',
-      period: '/ mois',
-      badge: 'Populaire',
-      highlighted: true,
-      features: [
-        'Tout le pack Standard',
-        'Jusqu’à 5 praticiens & secrétaires',
-        'Statistiques médicales avancées',
-        'Support prioritaire 7j/7'
-      ]
-    },
-    {
-      id: 'enterprise',
-      name: 'Entreprise',
-      tagline: 'Cliniques & centres médicaux multi-sites',
-      priceMonthly: 'Sur devis',
-      period: '',
-      features: [
-        'Praticiens & postes illimités',
-        'Gestion multi-cabinets centralisée',
-        'API & intégrations sur mesure',
-        'Accompagnement dédié sur site'
-      ]
-    }
-  ];
-
-  currentStep = signal<number>(1);
-  selectedProfile = signal<ProfileType>('independent_doctor');
-  selectedPlanId = signal<PlanId>('professional');
   acceptedTerms = signal<boolean>(false);
+
+  isLoadingRoles = signal<boolean>(false);
+
+  isLoadingPlans = signal<boolean>(false);
+
+  isLoadingRecapitulatif = signal<boolean>(false);
+
   isSubmitting = signal<boolean>(false);
+
   isCompleted = signal<boolean>(false);
 
-  companyForm = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(2)]],
-    specialty: ['Pédiatrie générale', [Validators.required]],
-    phone: ['', [Validators.required, Validators.minLength(8)]],
-    mobile: ['', [Validators.required, Validators.minLength(8)]],
-    email: ['', [Validators.required, Validators.email]],
-    city: ['Dakar', [Validators.required]],
-    address: ['', [Validators.required, Validators.minLength(5)]],
-    registrationNumber: ['']
+  errorMessage = signal<string | null>(null);
+
+
+  currentStep = signal<number>(1);
+
+  roles = signal<RoleOnboardingResponse[]>([]);
+
+  plans = signal<PlanAbonnementOnboardingResponse[]>([]);
+
+  recapitulatif = signal<OnboardingRecapitulatifResponse | null>(null);
+
+  selectedRoleUuid = signal<string | null>(null);
+
+  selectedRole = computed<RoleOnboardingResponse | null>(() => {
+    const uuid = this.selectedRoleUuid();
+
+    if (!uuid) {
+      return null;
+    }
+    return (this.roles().find(role => role.uuid === uuid) ?? null);
   });
 
-  selectedProfileInfo = computed(() =>
-    this.profileOptions.find(p => p.id === this.selectedProfile())!
-  );
+  selectedPlanUuid = signal<string | null>(null);
 
-  selectedPlanInfo = computed(() =>
-    this.plans.find(p => p.id === this.selectedPlanId())!
-  );
+  selectedPlan = computed<PlanAbonnementOnboardingResponse | null>(() => {
+    const uuid = this.selectedPlanUuid();
 
-  progressPercent = computed(() => ((this.currentStep() - 1) / (this.steps.length - 1)) * 100);
+    if (!uuid) {
+      return null;
+    }
 
-  selectProfile(profileId: ProfileType): void {
-    this.selectedProfile.set(profileId);
+    return (this.plans().find(plan => plan.uuid === uuid) ?? null);
+  });
+
+  companyForm = this.fb.nonNullable.group({
+    nom: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(150)
+      ]
+    ],
+
+    specialite: [
+      'Pédiatrie générale',
+      [
+        Validators.maxLength(150)
+      ]
+    ],
+
+    telephone: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(30)
+      ]
+    ],
+
+    email: [
+      '',
+      [
+        Validators.email,
+        Validators.maxLength(180)
+      ]
+    ],
+
+    numeroOrdreMedecin: [
+      '',
+      [
+        Validators.maxLength(50)
+      ]
+    ],
+
+    adresse: [
+      '',
+      [
+        Validators.maxLength(255)
+      ]
+    ]
+  });
+
+  progress = computed(() => {
+    return (this.currentStep() / this.steps.length) * 100;
+  });
+
+  ngOnInit(): void {
+    this.chargerRoles();
   }
 
-  selectPlan(planId: PlanId): void {
-    this.selectedPlanId.set(planId);
+  chargerRoles(): void {
+    this.isLoadingRoles.set(true);
+    this.errorMessage.set(null);
+
+    this.onboardingService
+      .rechercherRolesDisponibles()
+      .subscribe({
+        next: roles => {
+          this.roles.set(roles);
+          this.isLoadingRoles.set(false);
+        },
+
+        error: error => {
+          this.isLoadingRoles.set(false);
+
+          this.errorMessage.set(
+            this.extraireMessageErreur(
+              error,
+              'Impossible de charger les profils professionnels.'
+            )
+          );
+        }
+      });
   }
 
-  goToStep(step: number): void {
-    if (step >= 1 && step <= this.currentStep()) {
-      this.currentStep.set(step);
+  selectRole(role: RoleOnboardingResponse): void {
+    this.selectedRoleUuid.set(role.uuid);
+    this.errorMessage.set(null);
+  }
+
+  selectPlan(plan: PlanAbonnementOnboardingResponse): void {
+    this.selectedPlanUuid.set(plan.uuid);
+    this.errorMessage.set(null);
+  }
+
+
+  nextStep(): void {
+    this.errorMessage.set(null);
+
+    switch (this.currentStep()) {
+
+      case 1:
+        this.validerEtapeRole();
+        return;
+
+      case 2:
+        this.validerEtapeEntreprise();
+        return;
+
+      case 3:
+        this.validerEtapePlan();
+        return;
+
+      default:
+        return;
     }
   }
 
-  nextStep(): void {
-    const step = this.currentStep();
+  private validerEtapeRole(): void {
+    const roleUuid = this.selectedRoleUuid();
 
-    if (step === 2 && this.companyForm.invalid) {
-      this.companyForm.markAllAsTouched();
+    if (!roleUuid) {
+      this.errorMessage.set('Veuillez sélectionner votre profil professionnel.');
       return;
     }
 
-    if (step < 4) {
-      this.currentStep.update(s => s + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    const request: OnboardingRoleRequest = {
+      roleUuid
+    };
+
+    this.isSubmitting.set(true);
+
+    this.onboardingService
+      .choisirRole(request)
+      .subscribe({
+        next: () => {
+          this.isSubmitting.set(false);
+          this.currentStep.set(2);
+          this.errorMessage.set(null);
+        },
+
+        error: error => {
+          this.isSubmitting.set(false);
+
+          this.errorMessage.set(
+            this.extraireMessageErreur(
+              error, 'Impossible d’enregistrer votre profil professionnel.'
+            )
+          );
+        }
+      });
   }
 
-  prevStep(): void {
-    if (this.currentStep() > 1) {
-      this.currentStep.update(s => s - 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  private validerEtapeEntreprise(): void {
+    if (this.companyForm.invalid) {
+      this.companyForm.markAllAsTouched();
+      this.errorMessage.set('Veuillez vérifier les informations renseignées.');
+      return;
     }
+
+    const raw = this.companyForm.getRawValue();
+
+    const request: OnboardingEntrepriseRequest = {
+      nom: raw.nom.trim(),
+      telephone: raw.telephone.trim(),
+      email: raw.email.trim(),
+      adresse: raw.adresse.trim(),
+      specialite: raw.specialite.trim(),
+      numeroOrdreMedecin: raw.numeroOrdreMedecin.trim()
+    };
+
+    this.isSubmitting.set(true);
+
+    this.onboardingService
+      .renseignerEntreprise(request)
+      .subscribe({
+        next: () => {
+          this.isSubmitting.set(false);
+          this.currentStep.set(3);
+          this.errorMessage.set(null);
+
+          this.chargerPlans();
+        },
+
+        error: error => {
+          this.isSubmitting.set(false);
+
+          this.errorMessage.set(
+            this.extraireMessageErreur(
+              error, 'Impossible d’enregistrer les informations du cabinet.'
+            )
+          );
+        }
+      });
+  }
+
+  private chargerPlans(): void {
+    this.isLoadingPlans.set(true);
+    this.errorMessage.set(null);
+
+    this.abonnementService
+      .rechercherPlansDisponibles()
+      .subscribe({
+        next: plans => {
+          this.plans.set(plans);
+          this.isLoadingPlans.set(false);
+        },
+
+        error: error => {
+          this.isLoadingPlans.set(false);
+
+          this.errorMessage.set(
+            this.extraireMessageErreur(
+              error, 'Impossible de charger les offres disponibles.'
+            )
+          );
+        }
+      });
+  }
+
+  private validerEtapePlan(): void {
+    const planUuid = this.selectedPlanUuid();
+
+    if (!planUuid) {
+      this.errorMessage.set('Veuillez sélectionner une formule d’abonnement.');
+      return;
+    }
+
+    const request: OnboardingPlanRequest = {
+      planUuid
+    };
+
+    this.isSubmitting.set(true);
+
+    this.onboardingService
+      .choisirPlan(request)
+      .subscribe({
+        next: () => {
+          this.isSubmitting.set(false);
+          this.errorMessage.set(null);
+          this.currentStep.set(4);
+
+          this.chargerRecapitulatif();
+        },
+
+        error: error => {
+          this.isSubmitting.set(false);
+
+          this.errorMessage.set(
+            this.extraireMessageErreur(
+              error, 'Impossible d’enregistrer votre formule d’abonnement.'
+            )
+          );
+        }
+      });
+  }
+
+  private chargerRecapitulatif(): void {
+    this.isLoadingRecapitulatif.set(true);
+    this.errorMessage.set(null);
+
+    this.onboardingService
+      .rechercherRecapitulatif()
+      .subscribe({
+        next: recapitulatif => {
+          this.recapitulatif.set(recapitulatif);
+          this.isLoadingRecapitulatif.set(false);
+        },
+
+        error: error => {
+          this.isLoadingRecapitulatif.set(false);
+
+          this.errorMessage.set(
+            this.extraireMessageErreur(
+              error, 'Impossible de charger le récapitulatif de votre configuration.'
+            )
+          );
+        }
+      });
+  }
+
+  toggleAcceptedTerms(): void {
+    this.acceptedTerms.update(value => !value);
+    this.errorMessage.set(null);
   }
 
   submitOnboarding(): void {
+    this.errorMessage.set(null);
+
     if (!this.acceptedTerms()) {
+      this.errorMessage.set('Veuillez accepter les conditions d’utilisation pour continuer.');
       return;
     }
 
     this.isSubmitting.set(true);
 
-    const payload = {
-      profile: this.selectedProfile(),
-      company: this.companyForm.getRawValue(),
-      subscriptionPlan: this.selectedPlanId()
-    };
+    this.onboardingService
+      .finaliserOnboarding()
+      .subscribe({
+        next: () => {
+          this.isSubmitting.set(false);
+          this.isCompleted.set(true);
+        },
 
-    setTimeout(() => {
-      this.isSubmitting.set(false);
-      this.isCompleted.set(true);
-      console.log('Configuration PediaSaaS validée :', payload);
-    }, 900);
+        error: error => {
+          this.isSubmitting.set(false);
+
+          this.errorMessage.set(
+            this.extraireMessageErreur(
+              error, 'Impossible de finaliser votre configuration.'
+            )
+          );
+        }
+      });
   }
 
-  gotoDashboard() {
-    void this.router.navigate(['medecin']);
+  gotoDashboard(): void {
+    const roleCode = this.selectedRole()?.code;
+
+    if (roleCode === 'MEDECIN_INDEPENDANT') {
+      void this.router.navigate(['/medecin/dashboard']);
+      return;
+    }
+
+    if (roleCode === 'ADMIN_CABINET') {
+      void this.router.navigate(['/cabinet-dashboard']);
+      return;
+    }
+
+    void this.router.navigate(['/cabinet-dashboard']);
+  }
+
+  previousStep(): void {
+    if (this.currentStep() <= 1 || this.isSubmitting()) {
+      return;
+    }
+
+    this.errorMessage.set(null);
+
+    this.currentStep.update(step => step - 1);
+  }
+
+  getRoleIllustrationClass(role: RoleOnboardingResponse): string {
+    return role.code === 'MEDECIN_INDEPENDANT'
+      ? 'profile-card__illustration--doctor'
+      : 'profile-card__illustration--cabinet';
+  }
+
+  formatPrix(prix: number): string {
+    return new Intl.NumberFormat('fr-FR').format(prix);
+  }
+
+  private extraireMessageErreur(error: any, messageParDefaut: string): string {
+    const apiMessage = error?.error?.message;
+
+    if (typeof apiMessage === 'string' && apiMessage.trim().length > 0) {
+      return apiMessage;
+    }
+
+    return messageParDefaut;
   }
 }

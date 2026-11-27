@@ -1,40 +1,46 @@
 import { Routes } from '@angular/router';
 import { OnboardingComponent } from './onboarding-component';
-import { StartOnboardingComponent } from './pages/start-onboarding-component/start-onboarding-component';
-import { ListTenantComponent } from './pages/tenant/list-tenant-component/list-tenant-component';
-import { ListOnboardingPrecessComponent } from './pages/process/list-onboarding-precess-component/list-onboarding-precess-component';
-import { SuccessStepComponent } from './components/success-step-component/success-step-component';
-import { OnboardingMetierPageComponent } from './pages/onboarding-metier-page.component/onboarding-metier-page.component';
-
-
 export const ONBOARDING_ROUTES: Routes = [
 
   {
     path: '',
     component: OnboardingComponent,
     children: [
-      {
-        path: 'metier',
-        component: OnboardingMetierPageComponent
-      },
 
       {
         path: 'start',
-        component: StartOnboardingComponent
+        loadComponent: () =>
+          import('@features/onboarding/pages/onboarding-metier-page.component/onboarding-metier-page.component')
+            .then((m) => m.OnboardingMetierPageComponent)
       },
+
+      {
+        path: 'metier',
+        loadComponent: () =>
+          import('@features/onboarding/pages/start-onboarding-component/start-onboarding-component')
+            .then((m) => m.StartOnboardingComponent)
+      },
+
       {
         path: 'tenant',
-        component: ListTenantComponent
+        loadComponent: () =>
+          import('@features/onboarding/pages/tenant/list-tenant-component/list-tenant-component')
+            .then((m) => m.ListTenantComponent)
       },
+
       {
         path: 'process',
-        component: ListOnboardingPrecessComponent
+        loadComponent: () =>
+          import('@features/onboarding/pages/process/list-onboarding-precess-component/list-onboarding-precess-component')
+            .then((m) => m.ListOnboardingPrecessComponent)
       },
 
       {
         path: 'success',
-        component: SuccessStepComponent
-      }
+        loadComponent: () =>
+          import('@features/onboarding/components/success-step-component/success-step-component')
+            .then((m) => m.SuccessStepComponent)
+      },
     ],
   },
 ];

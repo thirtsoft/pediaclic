@@ -3,6 +3,9 @@ import { provideRouter, withComponentInputBinding, withViewTransitions } from '@
 
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { authInterceptor } from '@core/interceptors/auth.interceptor';
+import { errorInterceptor } from '@core/interceptors/error.interceptor';
+
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -17,7 +20,11 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(
       withFetch(),
-      withInterceptors([])
+      withInterceptors([
+        authInterceptor,
+        errorInterceptor
+      ])
     )
   ]
 };
+

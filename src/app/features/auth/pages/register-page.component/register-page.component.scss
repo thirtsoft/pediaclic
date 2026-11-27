@@ -1,30 +1,5 @@
-// ==========================================================================
-// CHARTE GRAPHIQUE PEDIASAAAS (TURQUOISE, NAVY & ORANGE)
-// ==========================================================================
-$navy-900: #162642;
-$navy-700: #334666;
-$slate-600: #5c6f8c;
-$slate-400: #99a7bd;
-$teal-500: #00a8b5;
-$teal-600: #008e99;
-$teal-accent: #00b894;
-$teal-soft: #e0f7f9;
-$orange-500: #f39237;
-$input-bg: #f4f8fa;
-$input-border: #dce6f0;
-$white: #ffffff;
-$danger: #d63061;
-$success-bg: #e3f9f3;
-$success-text: #0b7a5e;
+@use 'styles/variables' as *;
 
-$radius-card: 24px;
-$radius-input: 12px;
-$radius-pill: 9999px;
-$shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
-
-// ==========================================================================
-// BASE MOBILE-FIRST & UN SEUL ÉCRAN SANS SCROLL SUR DESKTOP
-// ==========================================================================
 :host {
   display: block;
   font-family:
@@ -33,9 +8,14 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
-  color: $navy-900;
+  color: $pediasaas-navy;
   min-height: 100dvh;
-  background: linear-gradient(135deg, #eef9fb 0%, #f6fbfd 55%, #e6f6f9 100%);
+  background: linear-gradient(
+    135deg,
+    #eef9fb 0%,
+    #f6fbfd 55%,
+    #e6f6f9 100%
+  );
   position: relative;
   overflow-x: hidden;
 
@@ -79,7 +59,7 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
       &--top-right {
         width: 220px;
         height: 220px;
-        background: rgba($teal-500, 0.12);
+        background: rgba($pediasaas-teal, 0.12);
         top: -70px;
         right: -70px;
       }
@@ -87,7 +67,7 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
       &--accent-orange {
         width: 115px;
         height: 115px;
-        background: rgba($orange-500, 0.16);
+        background: rgba($pediasaas-orange, 0.16);
         bottom: 18%;
         right: -55px;
       }
@@ -107,9 +87,6 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   }
 }
 
-// ==========================================================================
-// HEADER COMPACT : LOGO EN HAUT BIEN SÉPARÉ DE LA PHOTO
-// ==========================================================================
 .auth-header {
   position: relative;
   z-index: 2;
@@ -120,7 +97,7 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   min-height: 38px;
   padding-bottom: 0.35rem;
   margin-bottom: 0.35rem;
-  border-bottom: 1px solid rgba($navy-900, 0.06);
+  border-bottom: 1px solid rgba($pediasaas-navy, 0.06);
   flex-shrink: 0;
 }
 
@@ -149,26 +126,26 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   align-items: center;
   gap: 0.4rem;
   text-decoration: none;
-  background: $white;
-  color: $navy-900;
+  background: $pediasaas-white;
+  color: $pediasaas-navy;
   font-size: 0.8rem;
   font-weight: 700;
   padding: 0.35rem 0.85rem;
-  border-radius: $radius-pill;
-  border: 1px solid $input-border;
-  box-shadow: 0 4px 12px -5px rgba(22, 38, 66, 0.1);
+  border-radius: $pediasaas-radius-pill;
+  border: 1px solid $pediasaas-border;
+  box-shadow: $pediasaas-shadow-soft;
   transition: all 0.2s ease;
 
   &__arrow {
-    color: $teal-500;
+    color: $pediasaas-teal;
     font-weight: 800;
     transition: transform 0.2s ease;
   }
 
   &:hover {
-    background: $teal-soft;
-    border-color: rgba($teal-500, 0.35);
-    color: $teal-600;
+    background: $pediasaas-teal-light;
+    border-color: rgba($pediasaas-teal, 0.35);
+    color: $pediasaas-teal-dark;
 
     .btn-back-home__arrow {
       transform: translateX(-3px);
@@ -176,9 +153,6 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   }
 }
 
-// ==========================================================================
-// CONTENU PRINCIPAL
-// ==========================================================================
 .auth-content {
   position: relative;
   z-index: 1;
@@ -196,9 +170,6 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   }
 }
 
-// ==========================================================================
-// COLONNE GAUCHE : MASQUÉE SUR MOBILE, VISIBLE DÈS DESKTOP 1080PX
-// ==========================================================================
 .auth-brand-col {
   display: none;
   position: relative;
@@ -226,8 +197,8 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   height: 395px;
   border-radius: 28px 28px 90px 28px;
   overflow: hidden;
-  background: rgba($white, 0.65);
-  box-shadow: 0 16px 36px -14px rgba(22, 38, 66, 0.12);
+  background: rgba($pediasaas-white, 0.65);
+  box-shadow: $pediasaas-shadow-image;
 }
 
 .auth-photo {
@@ -259,12 +230,12 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
     margin: 0 0 0.8rem;
 
     .text-teal {
-      color: $teal-500;
+      color: $pediasaas-teal;
     }
   }
 
   &__desc {
-    color: $slate-600;
+    color: $pediasaas-muted;
     font-size: 0.9rem;
     margin: 0 0 1.25rem;
     max-width: 355px;
@@ -286,9 +257,9 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
     height: 46px;
     margin: 0 auto 0.4rem;
     border-radius: 14px;
-    background: rgba($white, 0.92);
-    box-shadow: 0 8px 20px -6px rgba(22, 38, 66, 0.1);
-    color: $teal-500;
+    background: rgba($pediasaas-white, 0.92);
+    box-shadow: $pediasaas-shadow-soft;
+    color: $pediasaas-teal;
     display: grid;
     place-items: center;
 
@@ -302,14 +273,11 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
     display: block;
     font-size: 0.72rem;
     font-weight: 600;
-    color: $navy-700;
+    color: $pediasaas-text;
     line-height: 1.22;
   }
 }
 
-// ==========================================================================
-// COLONNE DROITE : CARTE D'INSCRIPTION
-// ==========================================================================
 .auth-form-col {
   position: relative;
   display: flex;
@@ -322,11 +290,11 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
 .register-card {
   width: 100%;
   max-width: 460px;
-  background: $white;
-  border-radius: $radius-card;
+  background: $pediasaas-white;
+  border-radius: $pediasaas-radius-card;
   padding: 1.65rem 1.35rem;
-  box-shadow: $shadow-card;
-  border: 1px solid rgba($navy-900, 0.04);
+  box-shadow: $pediasaas-shadow-card;
+  border: 1px solid rgba($pediasaas-navy, 0.04);
 
   @media (min-width: 640px) {
     padding: 1.85rem 2.15rem 1.75rem;
@@ -335,8 +303,8 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   &__accent-bar {
     width: 44px;
     height: 4px;
-    border-radius: $radius-pill;
-    background: $teal-500;
+    border-radius: $pediasaas-radius-pill;
+    background: $pediasaas-teal;
     margin: 0 auto 0.7rem;
   }
 
@@ -345,7 +313,7 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
     text-align: center;
     font-size: 1.55rem;
     font-weight: 800;
-    color: $navy-900;
+    color: $pediasaas-navy;
     letter-spacing: -0.02em;
   }
 
@@ -353,27 +321,27 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
     margin: 0.3rem 0 1.25rem;
     text-align: center;
     font-size: 0.85rem;
-    color: $slate-600;
+    color: $pediasaas-muted;
   }
 }
 
 .alert-error {
-  background: #fde8ef;
-  color: $danger;
+  background: rgba($pediasaas-danger, 0.1);
+  color: $pediasaas-danger;
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.6rem 0.85rem;
-  border-radius: $radius-input;
+  border-radius: $pediasaas-radius-input;
   margin-bottom: 0.9rem;
 }
 
 .alert-success {
-  background: $success-bg;
-  color: $success-text;
+  background: $pediasaas-success-background;
+  color: $pediasaas-success;
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.6rem 0.85rem;
-  border-radius: $radius-input;
+  border-radius: $pediasaas-radius-input;
   margin-bottom: 0.9rem;
 }
 
@@ -403,10 +371,10 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
 .form-label {
   font-size: 0.8rem;
   font-weight: 700;
-  color: $navy-900;
+  color: $pediasaas-navy;
 
   .required-star {
-    color: $orange-500;
+    color: $pediasaas-orange;
   }
 }
 
@@ -420,7 +388,7 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
     left: 0.85rem;
     width: 17px;
     height: 17px;
-    color: $slate-400;
+    color: $pediasaas-muted;
     pointer-events: none;
   }
 }
@@ -429,10 +397,10 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   width: 100%;
   height: 46px;
   padding: 0.6rem 0.85rem 0.6rem 2.45rem;
-  border-radius: $radius-input;
-  border: 1.5px solid $input-border;
-  background: $input-bg;
-  color: $navy-900;
+  border-radius: $pediasaas-radius-input;
+  border: 1.5px solid $pediasaas-border;
+  background: $pediasaas-input-background;
+  color: $pediasaas-navy;
   font-family: inherit;
   font-size: 0.86rem;
   transition: all 0.2s ease;
@@ -442,19 +410,19 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   }
 
   &::placeholder {
-    color: $slate-400;
+    color: $pediasaas-muted;
   }
 
   &:focus {
     outline: none;
-    background: $white;
-    border-color: $teal-500;
-    box-shadow: 0 0 0 3px rgba($teal-500, 0.15);
+    background: $pediasaas-white;
+    border-color: $pediasaas-teal;
+    box-shadow: 0 0 0 3px rgba($pediasaas-teal, 0.15);
   }
 
   &.is-invalid {
-    border-color: $danger;
-    background: #fff8fa;
+    border-color: $pediasaas-danger;
+    background: rgba($pediasaas-danger, 0.03);
   }
 }
 
@@ -465,7 +433,7 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   height: 32px;
   border: none;
   background: transparent;
-  color: $slate-400;
+  color: $pediasaas-muted;
   cursor: pointer;
   display: grid;
   place-items: center;
@@ -476,12 +444,12 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   }
 
   &:hover {
-    color: $navy-900;
+    color: $pediasaas-navy;
   }
 }
 
 .error-text {
-  color: $danger;
+  color: $pediasaas-danger;
   font-size: 0.73rem;
   font-weight: 600;
 }
@@ -491,9 +459,9 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   height: 46px;
   margin-top: 0.25rem;
   border: none;
-  border-radius: $radius-pill;
-  background: $teal-500;
-  color: $white;
+  border-radius: $pediasaas-radius-pill;
+  background: $pediasaas-teal;
+  color: $pediasaas-white;
   font-family: inherit;
   font-size: 0.92rem;
   font-weight: 700;
@@ -502,11 +470,11 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  box-shadow: 0 10px 22px -6px rgba($teal-500, 0.55);
+  box-shadow: $pediasaas-shadow-button;
   transition: all 0.2s ease;
 
   &:hover:not(:disabled) {
-    background: $teal-600;
+    background: $pediasaas-teal-dark;
     transform: translateY(-1px);
   }
 
@@ -520,10 +488,10 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   margin: 1.1rem 0 0;
   text-align: center;
   font-size: 0.8rem;
-  color: $slate-600;
+  color: $pediasaas-muted;
 
   a {
-    color: $teal-600;
+    color: $pediasaas-teal-dark;
     font-weight: 700;
     text-decoration: none;
 
@@ -540,14 +508,14 @@ $shadow-card: 0 20px 50px -12px rgba(22, 38, 66, 0.12);
   justify-content: center;
   gap: 0.45rem;
   font-size: 0.72rem;
-  color: $navy-700;
+  color: $pediasaas-text;
   text-align: center;
   flex-shrink: 0;
 
   .rgpd-shield {
     width: 15px;
     height: 15px;
-    color: $teal-500;
+    color: $pediasaas-teal;
     flex-shrink: 0;
   }
 }

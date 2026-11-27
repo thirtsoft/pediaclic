@@ -24,12 +24,12 @@ export const AUTH_ROUTES: Routes = [
             .then((m) => m.RegisterPageComponent)
       },
 
-
       {
         path: 'mot-de-passe-oublie',
-        component: ForgotPasswordPageComponent
+        loadComponent: () =>
+          import('@features/auth/pages/forgot-password-page.component/forgot-password-page.component')
+            .then((m) => m.ForgotPasswordPageComponent)
       },
-
 
       {
 

@@ -1,3 +1,5 @@
+@use 'styles/variables' as *;
+
 @media (min-width: 1080px) {
   html:has(.auth-page),
   body:has(.auth-page) {

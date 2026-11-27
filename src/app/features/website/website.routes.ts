@@ -1,20 +1,14 @@
 
 import { Routes } from '@angular/router';
 import { WebsiteComponent } from './website-component';
-import { HomePageComponent } from '@features/website/pages/home-page.component/home-page.component';
 
 export const WEBSITE_ROUTES: Routes = [
 
   {
     path: '',
     component: WebsiteComponent,
-    title: 'Accueil Scoolli',
+    title: 'Accueil Pediaclic',
     children: [
-
-      {
-        path: '',
-        component: HomePageComponent
-      },
 
       {
         path: '',
