@@ -1,0 +1,227 @@
+<div class="patient-page">
+  <div class="page-header">
+    <div>
+      <h1>Patients</h1>
+
+      <p class="page-description">Gérez les patients et leurs informations.</p>
+    </div>
+
+    <button type="button" class="btn-primary" (click)="ajouterPatient()">
+      <span class="icon">+</span>
+      Nouveau patient
+    </button>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <span class="search-icon">⌕</span>
+
+      <input
+        type="text"
+        [value]="recherche()"
+        (input)="rechercher($any($event.target).value)"
+        placeholder="Rechercher un patient..."
+        aria-label="Rechercher un patient"
+      />
+
+      @if (recherche()) {
+        <button
+          type="button"
+          class="clear-search"
+          aria-label="Effacer la recherche"
+          (click)="rechercher('')"
+        >
+          ×
+        </button>
+      }
+    </div>
+
+    <div class="total-patients">
+      {{ totalElements() }}
+      {{ totalElements() > 1 ? 'patients' : 'patient' }}
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+
+      <span>Chargement des patients...</span>
+    </div>
+  } @else {
+    @if (patients().length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">👤</div>
+
+        @if (recherche()) {
+          <h2>Aucun patient trouvé</h2>
+
+          <p>Aucun patient ne correspond à « {{ recherche() }} ».</p>
+
+          <button type="button" class="btn-secondary" (click)="rechercher('')">
+            Réinitialiser la recherche
+          </button>
+        } @else {
+          <h2>Aucun patient</h2>
+
+          <p>Commencez par enregistrer votre premier patient.</p>
+
+          <button type="button" class="btn-primary" (click)="ajouterPatient()">
+            Ajouter un patient
+          </button>
+        }
+      </div>
+    } @else {
+      <div class="table-card">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>Date de naissance</th>
+                <th>Sexe</th>
+                <th>Parent principal</th>
+                <th>Téléphone</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (patient of patients(); track patient.uuid) {
+                <tr>
+                  <td>
+                    <div class="patient-cell">
+                      <div class="avatar">
+                        {{ initiales(patient) }}
+                      </div>
+
+                      <div class="patient-name">
+                        <strong>
+                          {{ patient.prenom }}
+                          {{ patient.nom }}
+                        </strong>
+
+                        <span>
+                          {{ patient.uuid }}
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td>
+                    {{ patient.dateNaissance }}
+                  </td>
+
+                  <td>
+                    {{ afficherSexe(patient.sexe) }}
+                  </td>
+
+                  <td>
+                    @if (patient.parentPrincipal) {
+                      <strong>
+                        {{ patient.parentPrincipal }}
+                      </strong>
+                    } @else {
+                      <span class="muted"> Non renseigné </span>
+                    }
+                  </td>
+
+                  <td>
+                    @if (patient.telephoneParentPrincipal) {
+                      {{ patient.telephoneParentPrincipal }}
+                    } @else {
+                      <span class="muted"> — </span>
+                    }
+                  </td>
+
+                  <td>
+                    <span
+                      class="status"
+                      [class.status-active]="patient.recordStatus === 'ACTIVE'"
+                      [class.status-inactive]="patient.recordStatus !== 'ACTIVE'"
+                    >
+                      <span class="status-dot"></span>
+
+                      {{ patient.recordStatus === 'ACTIVE' ? 'Actif' : 'Inactif' }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <div class="actions">
+                      <button
+                        type="button"
+                        class="action-button"
+                        (click)="modifierPatient(patient)"
+                      >
+                        Modifier
+                      </button>
+
+                      <button
+                        type="button"
+                        class="action-button danger"
+                        [disabled]="suppressionEnCours() === patient.uuid"
+                        (click)="supprimerPatient(patient)"
+                      >
+                        @if (suppressionEnCours() === patient.uuid) {
+                          Suppression...
+                        } @else {
+                          Supprimer
+                        }
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <div class="pagination-info">
+            Affichage de
+            <strong>{{ premiereLigne() }}</strong>
+            à
+            <strong>{{ derniereLigne() }}</strong>
+            sur
+            <strong>{{ totalElements() }}</strong>
+            patients
+          </div>
+
+          <div class="pagination-actions">
+            <select
+              [value]="size()"
+              (change)="changerTaillePage($any($event.target).value)"
+              aria-label="Nombre de patients par page"
+            >
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+
+            <button
+              type="button"
+              class="pagination-button"
+              [disabled]="page() === 0"
+              (click)="pagePrecedente()"
+            >
+              ←
+            </button>
+
+            <span class="page-number"> Page {{ page() + 1 }} sur {{ totalPages() }} </span>
+
+            <button
+              type="button"
+              class="pagination-button"
+              [disabled]="page() >= totalPages() - 1"
+              (click)="pageSuivante()"
+            >
+              →
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>

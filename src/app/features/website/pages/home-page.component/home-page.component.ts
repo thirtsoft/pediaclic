@@ -37,10 +37,9 @@ export class HomePageComponent {
 
   gotoLogin() {
     console.log('click');
-    void this.router.navigate(['auth/login']);
+    void this.router.navigate(['/auth/login']);
   }
 
-  // Cartes de fonctionnalités principales
   features: FeatureCard[] = [
     {
       id: 'rdv',

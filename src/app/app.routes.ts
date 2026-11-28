@@ -20,6 +20,14 @@ export const routes: Routes = [
         .then(m => m.ONBOARDING_ROUTES)
   },
 
+    {
+    path: 'patient',
+    canActivate: [authGuard],
+    loadChildren: () =>
+      import('./features/patient/patient.routes')
+        .then(m => m.PATIENT_ROUTES)
+  },
+
   {
     path: 'medecin',
     canActivate: [authGuard],

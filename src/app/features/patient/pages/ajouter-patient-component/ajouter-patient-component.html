@@ -1,0 +1,446 @@
+<div class="patient-create-page">
+
+  <div class="page-header">
+
+    <div class="header-content">
+
+      <button
+        type="button"
+        class="back-button"
+        (click)="annuler()"
+        aria-label="Retour aux patients"
+      >
+        ←
+      </button>
+
+      <div>
+        <h1>Nouveau patient</h1>
+
+        <p>
+          Enregistrez les informations du patient et de ses
+          parents ou tuteurs.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  @if (erreur()) {
+    <div class="alert-error">
+      <span class="alert-icon">!</span>
+
+      <div>
+        <strong>Impossible d'enregistrer le patient</strong>
+        <p>{{ erreur() }}</p>
+      </div>
+
+      <button
+        type="button"
+        class="alert-close"
+        (click)="erreur.set(null)"
+        aria-label="Fermer"
+      >
+        ×
+      </button>
+    </div>
+  }
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="enregistrer()"
+    novalidate
+  >
+
+    <!-- Informations patient -->
+    <section class="form-card">
+
+      <div class="card-header">
+
+        <div class="section-icon patient-icon">
+          👤
+        </div>
+
+        <div>
+          <h2>Informations du patient</h2>
+
+          <p>
+            Renseignez les informations personnelles du patient.
+          </p>
+        </div>
+
+      </div>
+
+      <div
+        class="card-body"
+        formGroupName="patient"
+      >
+
+        <div class="form-grid">
+
+          <div class="form-field">
+
+            <label for="prenom">
+              Prénom
+              <span>*</span>
+            </label>
+
+            <input
+              id="prenom"
+              type="text"
+              formControlName="prenom"
+              placeholder="Ex. Awa"
+              autocomplete="given-name"
+              [class.invalid]="estInvalide('prenom', 'patient')"
+            />
+
+            @if (estInvalide('prenom', 'patient')) {
+              <small>
+                Le prénom est obligatoire.
+              </small>
+            }
+
+          </div>
+
+          <div class="form-field">
+
+            <label for="nom">
+              Nom
+              <span>*</span>
+            </label>
+
+            <input
+              id="nom"
+              type="text"
+              formControlName="nom"
+              placeholder="Ex. Ndiaye"
+              autocomplete="family-name"
+              [class.invalid]="estInvalide('nom', 'patient')"
+            />
+
+            @if (estInvalide('nom', 'patient')) {
+              <small>
+                Le nom est obligatoire.
+              </small>
+            }
+
+          </div>
+
+          <div class="form-field">
+
+            <label for="dateNaissance">
+              Date de naissance
+              <span>*</span>
+            </label>
+
+            <input
+              id="dateNaissance"
+              type="date"
+              formControlName="dateNaissance"
+              [class.invalid]="estInvalide('dateNaissance', 'patient')"
+            />
+
+            @if (estInvalide('dateNaissance', 'patient')) {
+              <small>
+                La date de naissance est obligatoire.
+              </small>
+            }
+
+          </div>
+
+          <div class="form-field">
+
+            <label for="sexe">
+              Sexe
+              <span>*</span>
+            </label>
+
+            <select
+              id="sexe"
+              formControlName="sexe"
+              [class.invalid]="estInvalide('sexe', 'patient')"
+            >
+              <option [ngValue]="null">
+                Sélectionner
+              </option>
+
+              @for (sexe of sexes; track sexe.value) {
+                <option [ngValue]="sexe.value">
+                  {{ sexe.label }}
+                </option>
+              }
+            </select>
+
+            @if (estInvalide('sexe', 'patient')) {
+              <small>
+                Le sexe est obligatoire.
+              </small>
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- Parents -->
+    <section class="form-card">
+
+      <div class="card-header parent-header">
+
+        <div class="section-icon parent-icon">
+          👨‍👩‍👧
+        </div>
+
+        <div class="section-title">
+
+          <div>
+            <h2>Parents et tuteurs</h2>
+
+            <p>
+              Ajoutez au moins un parent ou tuteur légal.
+            </p>
+          </div>
+
+          <span class="required-badge">
+            Obligatoire
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="card-body">
+
+        <div formArrayName="parents">
+
+          @for (
+            parent of parents.controls;
+            track $index;
+            let index = $index
+          ) {
+
+            <div
+              class="parent-block"
+              [formGroupName]="index"
+            >
+
+              <div class="parent-block-header">
+
+                <div class="parent-number">
+                  {{ index + 1 }}
+                </div>
+
+                <div>
+                  <h3>
+                    Parent / tuteur {{ index + 1 }}
+                  </h3>
+
+                  <p>
+                    Coordonnées et lien avec le patient
+                  </p>
+                </div>
+
+                @if (parents.length > 1) {
+
+                  <button
+                    type="button"
+                    class="remove-parent"
+                    (click)="supprimerParent(index)"
+                  >
+                    Supprimer
+                  </button>
+
+                }
+
+              </div>
+
+              <div class="form-grid">
+
+                <div class="form-field">
+
+                  <label [for]="'parent-prenom-' + index">
+                    Prénom
+                    <span>*</span>
+                  </label>
+
+                  <input
+                    [id]="'parent-prenom-' + index"
+                    type="text"
+                    formControlName="prenom"
+                    placeholder="Ex. Fatou"
+                    autocomplete="given-name"
+                    [class.invalid]="estInvalide('prenom', 'parent', index)"
+                  />
+
+                  @if (estInvalide('prenom', 'parent', index)) {
+                    <small>
+                      Le prénom est obligatoire.
+                    </small>
+                  }
+
+                </div>
+
+                <div class="form-field">
+
+                  <label [for]="'parent-nom-' + index">
+                    Nom
+                    <span>*</span>
+                  </label>
+
+                  <input
+                    [id]="'parent-nom-' + index"
+                    type="text"
+                    formControlName="nom"
+                    placeholder="Ex. Diop"
+                    autocomplete="family-name"
+                    [class.invalid]="estInvalide('nom', 'parent', index)"
+                  />
+
+                  @if (estInvalide('nom', 'parent', index)) {
+                    <small>
+                      Le nom est obligatoire.
+                    </small>
+                  }
+
+                </div>
+
+                <div class="form-field">
+
+                  <label [for]="'parent-telephone-' + index">
+                    Téléphone
+                    <span>*</span>
+                  </label>
+
+                  <input
+                    [id]="'parent-telephone-' + index"
+                    type="tel"
+                    formControlName="telephone"
+                    placeholder="Ex. 77 123 45 67"
+                    autocomplete="tel"
+                    [class.invalid]="estInvalide('telephone', 'parent', index)"
+                  />
+
+                  @if (estInvalide('telephone', 'parent', index)) {
+                    <small>
+                      Le téléphone est obligatoire.
+                    </small>
+                  }
+
+                </div>
+
+                <div class="form-field">
+
+                  <label [for]="'parent-email-' + index">
+                    Email
+                  </label>
+
+                  <input
+                    [id]="'parent-email-' + index"
+                    type="email"
+                    formControlName="email"
+                    placeholder="Ex. parent@email.com"
+                    autocomplete="email"
+                    [class.invalid]="estInvalide('email', 'parent', index)"
+                  />
+
+                  @if (estInvalide('email', 'parent', index)) {
+                    <small>
+                      L'adresse email est invalide.
+                    </small>
+                  }
+
+                </div>
+
+                <div class="form-field">
+
+                  <label [for]="'parent-relation-' + index">
+                    Relation avec le patient
+                    <span>*</span>
+                  </label>
+
+                  <select
+                    [id]="'parent-relation-' + index"
+                    formControlName="typeRelation"
+                    [class.invalid]="estInvalide('typeRelation', 'parent', index)"
+                  >
+                    <option [ngValue]="null">
+                      Sélectionner
+                    </option>
+
+                    @for (
+                      relation of typesRelation;
+                      track relation.value
+                    ) {
+                      <option [ngValue]="relation.value">
+                        {{ relation.label }}
+                      </option>
+                    }
+
+                  </select>
+
+                  @if (estInvalide('typeRelation', 'parent', index)) {
+                    <small>
+                      La relation est obligatoire.
+                    </small>
+                  }
+
+                </div>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+        <button
+          type="button"
+          class="add-parent-button"
+          (click)="ajouterParent()"
+        >
+          <span>+</span>
+          Ajouter un autre parent ou tuteur
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- Actions -->
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="btn-secondary"
+        [disabled]="sauvegardeEnCours()"
+        (click)="annuler()"
+      >
+        Annuler
+      </button>
+
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="sauvegardeEnCours()"
+      >
+
+        @if (sauvegardeEnCours()) {
+          <span class="button-spinner"></span>
+          Enregistrement...
+        } @else {
+          Enregistrer le patient
+        }
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

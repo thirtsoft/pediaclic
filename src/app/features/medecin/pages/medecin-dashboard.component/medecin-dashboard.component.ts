@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
 export interface StatCard {
@@ -59,6 +59,7 @@ export interface ActivityDay {
   styleUrl: './medecin-dashboard.component.scss'
 })
 export class MedecinDashboardComponent {
+
   private readonly router = inject(Router);
 
   readonly isMobileMenuOpen = signal(false);
@@ -75,7 +76,7 @@ export class MedecinDashboardComponent {
   readonly navItems = [
     { id: 'medecin-dashboard', label: 'Tableau de bord1', icon: 'dashboard' },
     { id: 'cabinet-dashboard', label: 'Tableau de bord2', icon: 'dashboard' },
-    { id: 'patients', label: 'Patients', icon: 'patients' },
+    { id: 'patient', label: 'Patients', icon: 'patients' },
     { id: 'appointments', label: 'Rendez-vous', icon: 'appointments' },
     { id: 'consultations', label: 'Consultations', icon: 'consultations' },
     { id: 'prescriptions', label: 'Ordonnances', icon: 'prescriptions' },
@@ -189,19 +190,19 @@ export class MedecinDashboardComponent {
     this.isMobileMenuOpen.update((v) => !v);
   }
 
- selectNav(id: string): void {
-  this.activeNav.set(id);
-  this.isMobileMenuOpen.set(false);
+  selectNav(id: string): void {
+    this.activeNav.set(id);
+    this.isMobileMenuOpen.set(false);
 
-  this.router.navigate(['/', id]).then(
-    success => {
-      console.log('Navigation vers', id, success);
-    },
-    error => {
-      console.error('Erreur de navigation vers', id, error);
-    }
-  );
-}
+    this.router.navigate(['/', id]).then(
+      success => {
+        console.log('Navigation vers', id, success);
+      },
+      error => {
+        console.error('Erreur de navigation vers', id, error);
+      }
+    );
+  }
 
   triggerAction(actionId: string): void {
     console.log('Action déclenchée :', actionId);
